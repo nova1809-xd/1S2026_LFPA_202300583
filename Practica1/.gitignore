@@ -1,0 +1,65 @@
+# Archivos compilados
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Archivos de depuración
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Archivos temporales del editor
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Configuración de VS Code
+.vscode/
+*.code-workspace
+
+# Configuración de otros IDEs
+.idea/
+*.iml
+*.sublime-*
+*.project
+*.cproject
+.settings/
+
+# Archivos de CMake (si los llegas a usar)
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Archivos de backup
+*.bak
+*.backup
+*~
+
+# Logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+desktop.ini
+ehthumbs.db
+
+# Node modules (si usas alguna herramienta JS)
+node_modules/
+
+# Directorio de build alternativo
+build/
+bin/
+obj/
+
+# Archivos personales de documentación temporal
+*.tmp
