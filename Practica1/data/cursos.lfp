@@ -1,15 +1,15 @@
-771,Lenguajes Formales y de Programación,5,3,Sistemas
-795,Inteligencia Artificial 1,5,7,Sistemas
-348,Resistencia de Materiales,6,5,Civil
-502,Matemática Aplicada 1,4,1,Sistemas
-503,Matemática Aplicada 1,4,2,Sistemas
-621,Matemática Intermedia 2,4,2,Sistemas
-722,Estructuras de Datos,5,4,Sistemas
-841,Química General,5,2,Química
-450,Física 2,6,6,Civil
-451,Física 1,4,3,Civil
-452,Diseño Estructural,6,7,Civil
-251,Procesos de Manufactura,5,4,Industrial
-252,Matemática Intermedia 1,5,5,Industrial
-253,Control de Calidad,4,6,Industrial
-254,Ergonomía Industrial,4,3,Industrial
+101,Matemática Discreta,4,1,Sistemas
+102,Programación 1,4,1,Sistemas
+103,Estructura de Datos,4,3,Sistemas
+104,Bases de Datos,4,5,Sistemas
+105,Redes de Computadoras,4,7,Sistemas
+201,Matemáticas para Ingenieros,5,1,Civil
+202,Resistencia de Materiales,6,3,Civil
+203,Hidráulica,5,5,Civil
+204,Diseño de Estructuras,6,7,Civil
+205,Topografía,4,3,Civil
+301,Estadística Industrial,3,2,Industrial
+302,Investigación de Operaciones,4,4,Industrial
+303,Ingeniería de Métodos,4,5,Industrial
+304,Gestión de Calidad,3,7,Industrial
+305,Termodinámica,5,3,Industrial

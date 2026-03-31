@@ -692,6 +692,8 @@ void cargarEstudiantes(const string& ruta) {
         est.carnet = stoi(datos[0]);
         est.nombre = datos[1];
         est.apellido = datos[2];
+        transform(est.nombre.begin(), est.nombre.end(), est.nombre.begin(), ::toupper);
+        transform(est.apellido.begin(), est.apellido.end(), est.apellido.begin(), ::toupper);
         est.carrera = datos[3];
         est.semestre = stoi(datos[4]);
         
