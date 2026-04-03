@@ -1,0 +1,69 @@
+# Ejemplo de código MedLang
+# Este archivo demuestra la sintaxis del lenguaje MedLang
+
+HOSPITAL {
+    # Sección de pacientes
+    PACIENTES [
+        paciente {
+            codigo: PAC-001
+            nombre: "Juan Carlos Pérez García"
+            edad: 45
+            sangre: O+
+            fecha_nacimiento: 1978-06-15
+            especialidad: CARDIOLOGIA
+        }
+        
+        paciente {
+            codigo: PAC-002
+            nombre: "María Elena López Martínez"
+            edad: 32
+            sangre: AB-
+            fecha_nacimiento: 1991-03-22
+        }
+    ]
+    
+    # Sección de médicos
+    MEDICOS [
+        medico {
+            codigo: MED-001
+            nombre: "Dr. Roberto Flores"
+            especialidad: CARDIOLOGIA
+            horario_inicio: 08:00
+            horario_fin: 16:00
+        }
+        
+        medico {
+            codigo: MED-002
+            nombre: "Dra. Ana María Rodríguez"
+            especialidad: NEUROLOGIA
+            horario_inicio: 09:00
+            horario_fin: 17:00
+        }
+    ]
+    
+    # Sección de citas
+    CITAS [
+        cita {
+            codigo: CIT-001
+            paciente: PAC-001
+            medico: MED-001
+            fecha: 2024-12-20
+            hora: 10:30
+            lugar: "Consultorio A"
+        }
+    ]
+    
+    # Sección de diagnósticos
+    DIAGNOSTICOS [
+        diagnostico {
+            codigo: DIA-001
+            paciente: PAC-001
+            medico: MED-001
+            descripcion: "Hipertensión arterial controlada"
+            fecha: 2024-12-20
+            medicamento: "Losartán"
+            dosis: "50mg"
+            frecuencia: DIARIA
+        }
+    ]
+}

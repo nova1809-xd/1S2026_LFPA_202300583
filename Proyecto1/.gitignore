@@ -1,0 +1,67 @@
+# .gitignore para Proyecto1 - MedLexer
+
+# Ejecutables
+*.exe
+*.out
+*.app
+medlexer
+medlexer.exe
+tests
+tests.exe
+
+# Archivos compilados
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+
+# Directorios de compilación
+build/
+cmake-build-debug/
+cmake-build-release/
+.cmake/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.pro.user
+.qtc_clangd/
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.VC.db
+*.ipch
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+Makefile
+
+# Dependencias locales
+bin/
+lib/
+include/local
+
+# Archivos temporales
+*.tmp
+*.bak
+*.log
+*.o.d
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Diversos
+.clangd
+compile_commands.json
