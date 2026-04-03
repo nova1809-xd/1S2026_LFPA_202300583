@@ -1,0 +1,1 @@
+HOSPITAL{}PACIENTES{paciente{codigo:PAC-777,nombre:"Zoe",sangre:A+,nacimiento:2000-01-01}}MEDICOS{medico{codigo:MED-777,nombre:"Dr. X",especialidad:DERMATOLOGIA}}CITAS{cita{codigo:CIT-777,paciente:PAC-777,medico:MED-777,fecha:2026-12-31,hora:23:59}}DIAGNOSTICOS{diagnostico{codigo:DIA-777,cita:CIT-777,detalle:"Alta"}}

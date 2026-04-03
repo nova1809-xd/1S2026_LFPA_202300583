@@ -6,7 +6,6 @@
 *.app
 medlexer
 medlexer.exe
-tests
 tests.exe
 
 # Archivos compilados

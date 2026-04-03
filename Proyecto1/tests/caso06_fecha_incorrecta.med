@@ -1,0 +1,5 @@
+HOSPITAL { }
+PACIENTES { paciente { codigo: PAC-002, nombre: "Eva", sangre: B+, nacimiento: 2025-13-45 } }
+MEDICOS { medico { codigo: MED-002, nombre: "Dr. Paz", especialidad: UROLOGIA } }
+CITAS { cita { codigo: CIT-002, paciente: PAC-002, medico: MED-002, fecha: 2025-13-45, hora: 10:30 } }
+DIAGNOSTICOS { }

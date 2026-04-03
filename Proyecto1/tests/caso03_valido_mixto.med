@@ -1,0 +1,13 @@
+HOSPITAL { }
+PACIENTES {
+    paciente { codigo: PAC-101 , nombre: "Marta" , sangre: A- , nacimiento: 1988-01-22 }
+}
+MEDICOS {
+    medico { codigo: MED-101 , nombre: "Dr. Vega" , especialidad: ONCOLOGIA }
+}
+CITAS {
+    cita { codigo: CIT-101 , paciente: PAC-101 , medico: MED-101 , fecha: 2026-05-02 , hora: 08:00 }
+}
+DIAGNOSTICOS {
+    diagnostico { codigo: DIA-101 , cita: CIT-101 , detalle: "Seguimiento" }
+}

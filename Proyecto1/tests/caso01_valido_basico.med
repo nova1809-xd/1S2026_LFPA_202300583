@@ -1,0 +1,14 @@
+HOSPITAL {
+}
+PACIENTES {
+  paciente { codigo: PAC-001, nombre: "Ana", sangre: O+, nacimiento: 1999-05-10 }
+}
+MEDICOS {
+  medico { codigo: MED-001, nombre: "Dr. Ruiz", especialidad: CARDIOLOGIA }
+}
+CITAS {
+  cita { codigo: CIT-001, paciente: PAC-001, medico: MED-001, fecha: 2026-04-10, hora: 09:30 }
+}
+DIAGNOSTICOS {
+  diagnostico { codigo: DIA-001, cita: CIT-001, detalle: "Control general" }
+}

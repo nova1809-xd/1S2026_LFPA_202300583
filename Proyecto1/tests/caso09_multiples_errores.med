@@ -1,0 +1,11 @@
+HOSPITL { }
+PACIENTES {
+  paciente { codigo: PA-01, nombre: "X", sangre: O++, nacimiento: 2026-99-99, alias: @bad }
+}
+MEDICOS {
+  medico { codigo: MED-00A, nombre: "Dr.#", especialidad: Cardio }
+}
+CITAS {
+  cta { codigo: CIT-009, paciente: PAC-009, medico: MED-009, fecha: 2026-15-40, hora: 30:70 }
+}
+DIAGNOSTICOS { diagnostico { codigo: DIA-009, cita: CIT-009, detalle: "???" } }

@@ -1,0 +1,5 @@
+HOSPITAL { }
+PACIENTES { paciente { codigo: PAC-001, nombre: "Ana" @ } }
+MEDICOS { medico { codigo: MED-001, nombre: "Dr#Ruiz", especialidad: CARDIOLOGIA } }
+CITAS { }
+DIAGNOSTICOS { }

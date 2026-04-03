@@ -1,0 +1,5 @@
+HOSPITAL { }
+PACIENTES { paciente { codigo: PAC-004, nombre: "Leo", sangre: AB+, nacimiento: 1995-07-07 } }
+MEDICOS { medico { codigo: MED-004, nombre: "Dr. Mora", especialidad: Cardio } }
+CITAS { cita { codigo: CIT-004, paciente: PAC-004, medico: MED-004, fecha: 2026-07-01, hora: 11:15 } }
+DIAGNOSTICOS { }

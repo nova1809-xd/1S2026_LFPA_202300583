@@ -1,0 +1,14 @@
+HOSPITAL{
+}
+PACIENTES{
+paciente{codigo:PAC-010,nombre:"Luis",sangre:AB-,nacimiento:2001-12-01}
+}
+MEDICOS{
+medico{codigo:MED-010,nombre:"Dra. Solis",especialidad:NEUROLOGIA}
+}
+CITAS{
+cita{codigo:CIT-010,paciente:PAC-010,medico:MED-010,fecha:2026-04-11,hora:14:05}
+}
+DIAGNOSTICOS{
+diagnostico{codigo:DIA-010,cita:CIT-010,detalle:"Evaluacion inicial"}
+}
