@@ -35,7 +35,7 @@ private:
 public:
     LexicalAnalyzerTests() = default;
     
-    // ===== Pruebas de Delimitadores =====
+    // ===== pruebas de delimitadores =====
     
     void testDelimitadores() {
         std::cout << "\n=== Pruebas de Delimitadores ===" << std::endl;
@@ -62,7 +62,7 @@ public:
             tokens.size() > 5 && tokens[5].getTipo() == TokenType::COMA);
     }
     
-    // ===== Pruebas de Palabras Reservadas =====
+    // ===== pruebas de palabras reservadas =====
     
     void testPalabrasReservadas() {
         std::cout << "\n=== Pruebas de Palabras Reservadas ===" << std::endl;
@@ -105,18 +105,18 @@ public:
             tokens.size() > 3 && tokens[3].getTipo() == TokenType::DIAGNOSTICO);
     }
     
-    // ===== Pruebas de Identificadores y Códigos ID =====
+    // ===== pruebas de identificadores y códigos id =====
     
     void testIdentificadores() {
         std::cout << "\n=== Pruebas de Identificadores y Códigos ID ===" << std::endl;
         
-        // Identificador común
+        // identificador común
         LexicalAnalyzer analizador1("nombre edad ciudad");
         auto tokens1 = analizador1.analizarCompleto();
         reportarPrueba("Reconocer identificador común",
             tokens1.size() > 0 && tokens1[0].getTipo() == TokenType::IDENTIFICADOR);
         
-        // Código ID (formato XXX-NNN)
+        // código id (formato XXX-NNN)
         LexicalAnalyzer analizador2("MED-001 PAC-042 HOS-999");
         auto tokens2 = analizador2.analizarCompleto();
         reportarPrueba("Reconocer código ID MED-001",
@@ -126,7 +126,7 @@ public:
             tokens2[0].getLexema().find('-') != std::string::npos);
     }
     
-    // ===== Pruebas de Números =====
+    // ===== pruebas de números =====
     
     void testNumeros() {
         std::cout << "\n=== Pruebas de Números ===" << std::endl;
@@ -145,7 +145,7 @@ public:
             tokens.size() > 2 && tokens[2].getLexema() == "999");
     }
     
-    // ===== Pruebas de Cadenas =====
+    // ===== pruebas de cadenas =====
     
     void testCadenas() {
         std::cout << "\n=== Pruebas de Cadenas ===" << std::endl;
@@ -173,8 +173,8 @@ public:
         LexicalAnalyzer analizador("2024-12-25 1990-05-15 2000-01-01");
         auto tokens = analizador.analizarCompleto();
         
-        // Se espera FECHA cuando se implemente reconocerFecha()
-        // Por ahora puede ser INTEGER o ERROR_TOKEN
+        // se espera FECHA cuando se implemente reconocerFecha()
+        // por ahora puede ser INTEGER o ERROR_TOKEN
         reportarPrueba("Estructura de fecha reconocida",
             tokens.size() > 0);
     }
@@ -222,7 +222,7 @@ public:
         reportarPrueba("Se registran errores léxicos",
             errores.size() > 0);
         
-        reportarPrueba("Análisis continúa después de error",
+        reportarPrueba("análisis continúa después de error",
             tokens.size() > 1);  // Más de un token intenta reconocerse
         
         reportarPrueba("Error contiene información de posición",

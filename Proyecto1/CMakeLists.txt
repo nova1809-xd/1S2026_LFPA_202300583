@@ -1,40 +1,43 @@
-# CMakeLists.txt para MedLexer
-cmake_minimum_required(VERSION 3.10)
-project(MedLexer CXX)
+cmake_minimum_required(VERSION 3.16)
+project(MedLexer LANGUAGES CXX)
 
-# Configurar estándar C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Agregar opciones de compilación
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 if(MSVC)
-    add_compile_options(/W4)  # Máximo nivel de advertencias en MSVC
+    add_compile_options(/W4)
 else()
-    add_compile_options(-Wall -Wextra -pedantic)  # GCC/Clang
+    add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
-# Incluir directorios
-include_directories(${PROJECT_SOURCE_DIR}/include)
+find_package(Qt6 COMPONENTS Widgets QUIET)
+if(Qt6_FOUND)
+    set(QT_PACKAGE Qt6)
+else()
+    find_package(Qt5 COMPONENTS Widgets REQUIRED)
+    set(QT_PACKAGE Qt5)
+endif()
 
-# Archivos fuente
 set(SOURCES
     src/main.cpp
+    src/MainWindow.cpp
+    src/ReportGenerator.cpp
     src/Token.cpp
     src/LexicalAnalyzer.cpp
 )
 
-# Crear ejecutable principal
-add_executable(medlexer ${SOURCES})
-
-# Crear ejecutable de pruebas
-add_executable(medlexer_tests 
-    src/Token.cpp
-    src/LexicalAnalyzer.cpp
-    src/tests.cpp
+set(HEADERS
+    src/MainWindow.h
+    src/ReportGenerator.h
+    include/Token.h
+    include/LexicalAnalyzer.h
 )
 
-# Mensaje de compilación completada
-add_custom_command(TARGET medlexer POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "✓ MedLexer compilado exitosamente"
-)
+add_executable(medlexer ${SOURCES} ${HEADERS})
+target_include_directories(medlexer PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(medlexer PRIVATE ${QT_PACKAGE}::Widgets)

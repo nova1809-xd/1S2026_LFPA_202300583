@@ -45,20 +45,20 @@ void Token::setColumna(int col) {
 // convierte los tipos de token a strings para mostrar
 std::string Token::tipoToString(TokenType tipo) {
     switch (tipo) {
-        // Palabras reservadas principales
+        // palabras reservadas principales
         case TokenType::HOSPITAL:           return "HOSPITAL";
         case TokenType::PACIENTES:          return "PACIENTES";
         case TokenType::MEDICOS:            return "MEDICOS";
         case TokenType::CITAS:              return "CITAS";
         case TokenType::DIAGNOSTICOS:       return "DIAGNOSTICOS";
         
-        // Palabras reservadas de elemento
+        // palabras reservadas de elemento
         case TokenType::PACIENTE:           return "PACIENTE";
         case TokenType::MEDICO:             return "MEDICO";
         case TokenType::CITA:               return "CITA";
         case TokenType::DIAGNOSTICO:        return "DIAGNOSTICO";
         
-        // Especialidades
+        // especialidades
         case TokenType::CARDIOLOGIA:        return "CARDIOLOGIA";
         case TokenType::NEUROLOGIA:         return "NEUROLOGIA";
         case TokenType::OFTALMOLOGIA:       return "OFTALMOLOGIA";
@@ -70,7 +70,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::DERMATOLOGIA:       return "DERMATOLOGIA";
         case TokenType::ONCOLOGIA:          return "ONCOLOGIA";
         
-        // Frecuencia de dosis
+        // frecuencia de dosis
         case TokenType::DIARIA:             return "DIARIA";
         case TokenType::CADA_8_HORAS:       return "CADA_8_HORAS";
         case TokenType::CADA_12_HORAS:      return "CADA_12_HORAS";
@@ -78,7 +78,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::CADA_4_HORAS:       return "CADA_4_HORAS";
         case TokenType::SEGUN_SEA_NECESARIO: return "SEGUN_SEA_NECESARIO";
         
-        // Tipos de sangre
+        // tipos de sangre
         case TokenType::TIPO_SANGRE_A_POS:  return "TIPO_SANGRE_A_POS (A+)";
         case TokenType::TIPO_SANGRE_A_NEG:  return "TIPO_SANGRE_A_NEG (A-)";
         case TokenType::TIPO_SANGRE_B_POS:  return "TIPO_SANGRE_B_POS (B+)";
@@ -88,7 +88,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::TIPO_SANGRE_O_POS:  return "TIPO_SANGRE_O_POS (O+)";
         case TokenType::TIPO_SANGRE_O_NEG:  return "TIPO_SANGRE_O_NEG (O-)";
         
-        // Tipos de datos
+        // tipos de datos
         case TokenType::INTEGER:            return "INTEGER";
         case TokenType::STRING:             return "STRING";
         case TokenType::IDENTIFICADOR_CODIGO: return "IDENTIFICADOR_CODIGO";
@@ -96,7 +96,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::HORA:               return "HORA";
         case TokenType::IDENTIFICADOR:      return "IDENTIFICADOR";
         
-        // Delimitadores
+        // delimitadores
         case TokenType::LLAVE_ABIERTA:      return "LLAVE_ABIERTA ({)";
         case TokenType::LLAVE_CERRADA:      return "LLAVE_CERRADA (})";
         case TokenType::CORCHETE_ABIERTO:   return "CORCHETE_ABIERTO ([)";
@@ -104,7 +104,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::DOS_PUNTOS:         return "DOS_PUNTOS (:)";
         case TokenType::COMA:               return "COMA (,)";
         
-        // Especiales
+        // especiales
         case TokenType::EOF_TOKEN:          return "EOF_TOKEN";
         case TokenType::ERROR_TOKEN:        return "ERROR_TOKEN";
         
