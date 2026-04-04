@@ -153,7 +153,7 @@ Token LexicalAnalyzer::reconocerCodigoID(int linea, int columna) {
         }
     };
 
-    bool valido =
+    bool formatoValido =
         posicion + 7 <= codigoFuente.length() &&
         esLetraMayuscula(caracterEn(0)) &&
         esLetraMayuscula(caracterEn(1)) &&
@@ -162,6 +162,13 @@ Token LexicalAnalyzer::reconocerCodigoID(int linea, int columna) {
         esDigito(caracterEn(4)) &&
         esDigito(caracterEn(5)) &&
         esDigito(caracterEn(6));
+
+    bool prefijoValido =
+        (caracterEn(0) == 'P' && caracterEn(1) == 'A' && caracterEn(2) == 'C') ||
+        (caracterEn(0) == 'M' && caracterEn(1) == 'E' && caracterEn(2) == 'D') ||
+        (caracterEn(0) == 'C' && caracterEn(1) == 'I' && caracterEn(2) == 'T');
+
+    bool valido = formatoValido && prefijoValido;
 
     if (valido && !esSeparador(caracterEn(7))) {
         valido = false;
@@ -279,6 +286,14 @@ Token LexicalAnalyzer::reconocerFecha(int linea, int columna) {
         valido = false;
     }
 
+    if (valido) {
+        int mes = (caracterEn(5) - '0') * 10 + (caracterEn(6) - '0');
+        int dia = (caracterEn(8) - '0') * 10 + (caracterEn(9) - '0');
+        if (mes < 1 || mes > 12 || dia < 1 || dia > 31) {
+            valido = false;
+        }
+    }
+
     if (!valido) {
         consumirLexemaCorrupto();
         std::string lexemaError = codigoFuente.substr(inicio, posicion - inicio);
@@ -321,6 +336,14 @@ Token LexicalAnalyzer::reconocerHora(int linea, int columna) {
 
     if (valido && !esSeparador(caracterEn(5))) {
         valido = false;
+    }
+
+    if (valido) {
+        int hh = (caracterEn(0) - '0') * 10 + (caracterEn(1) - '0');
+        int mm = (caracterEn(3) - '0') * 10 + (caracterEn(4) - '0');
+        if (hh < 0 || hh > 23 || mm < 0 || mm > 59) {
+            valido = false;
+        }
     }
 
     if (!valido) {
@@ -502,10 +525,11 @@ Token LexicalAnalyzer::nextToken() {
                 return t;
             }
 
-            bool posibleCodigoID =
-                esLetraMayuscula(caracterEn(0)) && esLetraMayuscula(caracterEn(1)) &&
-                esLetraMayuscula(caracterEn(2)) && caracterEn(3) == '-' &&
-                esDigito(caracterEn(4)) && esDigito(caracterEn(5)) && esDigito(caracterEn(6));
+                        bool posibleCodigoID =
+                                (esLetraMayuscula(caracterEn(0)) && esLetraMayuscula(caracterEn(1)) &&
+                                 esLetraMayuscula(caracterEn(2)) && caracterEn(3) == '-' &&
+                                 esDigito(caracterEn(4)) && esDigito(caracterEn(5)) &&
+                                 esDigito(caracterEn(6)));
 
             if (posibleCodigoID) {
                 Token t = reconocerCodigoID(tokenLinea, tokenColumna);

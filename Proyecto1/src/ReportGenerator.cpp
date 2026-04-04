@@ -1,34 +1,7 @@
 #include "ReportGenerator.h"
 
 #include <fstream>
-#include <vector>
 #include <unordered_map>
-
-struct PacienteFila {
-    std::string paciente;
-    int edad;
-    std::string sangre;
-    std::string diagnostico;
-    std::string medicamento;
-    std::string estado;
-};
-
-struct MedicoFila {
-    std::string medico;
-    std::string codigo;
-    std::string especialidad;
-    int citas;
-    int pacientes;
-    std::string nivelCarga;
-};
-
-struct CitaFila {
-    std::string codigo;
-    std::string paciente;
-    std::string medico;
-    std::string fecha;
-    std::string hora;
-};
 
 ReportGenerator::ReportGenerator(const std::string& outputDirectory)
     : outputDir(outputDirectory) {
@@ -47,16 +20,9 @@ std::string ReportGenerator::buildPath(const std::string& fileName) const {
     return outputDir + "/" + fileName;
 }
 
-bool ReportGenerator::generarReportePacientes() {
+bool ReportGenerator::generarReportePacientes(const std::vector<PacienteFila>& filas) {
     std::ofstream out(buildPath("reporte_pacientes.html"));
     if (!out.is_open()) return false;
-
-    std::vector<PacienteFila> filas = {
-        {"Ana Lopez", 25, "O+", "Hipertension", "Losartan", "Estable"},
-        {"Luis Perez", 61, "A-", "Diabetes", "Metformina", "Controlado"},
-        {"Marta Diaz", 39, "AB+", "Migraña", "Sumatriptan", "Seguimiento"},
-        {"Iris Mora", 33, "B+", "Asma", "Salbutamol", "Estable"}
-    };
 
     std::string html;
     html += "<!DOCTYPE html><html><head><meta charset='utf-8'>";
@@ -91,16 +57,9 @@ bool ReportGenerator::generarReportePacientes() {
     return true;
 }
 
-bool ReportGenerator::generarReporteMedicos() {
+bool ReportGenerator::generarReporteMedicos(const std::vector<MedicoFila>& filas) {
     std::ofstream out(buildPath("reporte_medicos.html"));
     if (!out.is_open()) return false;
-
-    std::vector<MedicoFila> filas = {
-        {"Dr. Ruiz", "MED-001", "CARDIOLOGIA", 18, 15, "Alta"},
-        {"Dra. Solis", "MED-010", "NEUROLOGIA", 11, 9, "Media"},
-        {"Dr. Vega", "MED-101", "ONCOLOGIA", 7, 6, "Media"},
-        {"Dra. Neri", "MED-003", "PEDIATRIA", 4, 4, "Baja"}
-    };
 
     std::string html;
     html += "<!DOCTYPE html><html><head><meta charset='utf-8'>";
@@ -135,16 +94,9 @@ bool ReportGenerator::generarReporteMedicos() {
     return true;
 }
 
-bool ReportGenerator::generarReporteCitas() {
+bool ReportGenerator::generarReporteCitas(const std::vector<CitaFila>& filas) {
     std::ofstream out(buildPath("reporte_citas.html"));
     if (!out.is_open()) return false;
-
-    std::vector<CitaFila> filas = {
-        {"CIT-001", "PAC-001", "MED-001", "2026-04-10", "09:30"},
-        {"CIT-002", "PAC-010", "MED-001", "2026-04-10", "09:30"},
-        {"CIT-003", "PAC-101", "MED-010", "2026-04-11", "14:05"},
-        {"CIT-004", "PAC-003", "MED-003", "2026-04-12", "11:00"}
-    };
 
     std::unordered_map<std::string, int> agenda;
     for (const auto& f : filas) {
@@ -188,9 +140,42 @@ bool ReportGenerator::generarReporteCitas() {
     return true;
 }
 
-bool ReportGenerator::generarReporteEstadisticas() {
+bool ReportGenerator::generarReporteEstadisticas(
+    const std::vector<PacienteFila>& pacientes,
+    const std::vector<MedicoFila>& medicos,
+    const std::vector<CitaFila>& citas) {
+
     std::ofstream out(buildPath("reporte_estadisticas.html"));
     if (!out.is_open()) return false;
+
+    int conflictos = 0;
+    std::unordered_map<std::string, int> agenda;
+    for (const auto& c : citas) {
+        std::string clave = c.medico + "|" + c.fecha + "|" + c.hora;
+        agenda[clave]++;
+    }
+    for (const auto& entry : agenda) {
+        if (entry.second > 1) {
+            conflictos += entry.second;
+        }
+    }
+
+    std::unordered_map<std::string, int> medicosPorEspecialidad;
+    std::unordered_map<std::string, int> citasPorEspecialidad;
+    std::unordered_map<std::string, int> pacientesPorEspecialidad;
+    std::unordered_map<std::string, std::string> especialidadPorCodigo;
+
+    for (const auto& m : medicos) {
+        medicosPorEspecialidad[m.especialidad]++;
+        especialidadPorCodigo[m.codigo] = m.especialidad;
+    }
+    for (const auto& c : citas) {
+        auto it = especialidadPorCodigo.find(c.medico);
+        if (it != especialidadPorCodigo.end()) {
+            citasPorEspecialidad[it->second]++;
+            pacientesPorEspecialidad[it->second]++;
+        }
+    }
 
     std::string html;
     html += "<!DOCTYPE html><html><head><meta charset='utf-8'>";
@@ -208,18 +193,23 @@ bool ReportGenerator::generarReporteEstadisticas() {
 
     html += "<h2>Indicadores clave</h2>";
     html += "<div class='cards'>";
-    html += "<div class='card'><strong>Pacientes</strong><br>124</div>";
-    html += "<div class='card'><strong>Medicos</strong><br>21</div>";
-    html += "<div class='card'><strong>Citas</strong><br>318</div>";
-    html += "<div class='card'><strong>Conflictos</strong><br>3</div>";
+    html += "<div class='card'><strong>Pacientes</strong><br>" + std::to_string(pacientes.size()) + "</div>";
+    html += "<div class='card'><strong>Medicos</strong><br>" + std::to_string(medicos.size()) + "</div>";
+    html += "<div class='card'><strong>Citas</strong><br>" + std::to_string(citas.size()) + "</div>";
+    html += "<div class='card'><strong>Conflictos</strong><br>" + std::to_string(conflictos) + "</div>";
     html += "</div>";
 
     html += "<h2>Tabla de especialidades</h2>";
     html += "<table><thead><tr><th>Especialidad</th><th>Medicos</th><th>Citas</th><th>Pacientes Atendidos</th></tr></thead><tbody>";
-    html += "<tr><td>CARDIOLOGIA</td><td>5</td><td>82</td><td>61</td></tr>";
-    html += "<tr><td>NEUROLOGIA</td><td>3</td><td>41</td><td>36</td></tr>";
-    html += "<tr><td>ONCOLOGIA</td><td>4</td><td>57</td><td>40</td></tr>";
-    html += "<tr><td>PEDIATRIA</td><td>6</td><td>96</td><td>73</td></tr>";
+    for (const auto& entry : medicosPorEspecialidad) {
+        const std::string& especialidad = entry.first;
+        html += "<tr>";
+        html += "<td>" + especialidad + "</td>";
+        html += "<td>" + std::to_string(entry.second) + "</td>";
+        html += "<td>" + std::to_string(citasPorEspecialidad[especialidad]) + "</td>";
+        html += "<td>" + std::to_string(pacientesPorEspecialidad[especialidad]) + "</td>";
+        html += "</tr>";
+    }
     html += "</tbody></table></body></html>";
 
     out << html;
@@ -227,7 +217,11 @@ bool ReportGenerator::generarReporteEstadisticas() {
     return true;
 }
 
-bool ReportGenerator::generarDiagramaGraphviz() {
+bool ReportGenerator::generarDiagramaGraphviz(
+    const std::vector<PacienteFila>& pacientes,
+    const std::vector<MedicoFila>& medicos,
+    const std::vector<CitaFila>& citas) {
+
     std::ofstream out(buildPath("diagrama.dot"));
     if (!out.is_open()) return false;
 
@@ -236,9 +230,9 @@ bool ReportGenerator::generarDiagramaGraphviz() {
     dot += "  rankdir=LR;\n";
     dot += "  node [shape=box, style=filled, fillcolor=lightblue, fontname=Helvetica];\n";
     dot += "  HOSPITAL [label=\"HOSPITAL\"];\n";
-    dot += "  PACIENTES [label=\"PACIENTES\"];\n";
-    dot += "  MEDICOS [label=\"MEDICOS\"];\n";
-    dot += "  CITAS [label=\"CITAS\"];\n";
+    dot += "  PACIENTES [label=\"PACIENTES (" + std::to_string(pacientes.size()) + ")\"];\n";
+    dot += "  MEDICOS [label=\"MEDICOS (" + std::to_string(medicos.size()) + ")\"];\n";
+    dot += "  CITAS [label=\"CITAS (" + std::to_string(citas.size()) + ")\"];\n";
     dot += "  DIAGNOSTICOS [label=\"DIAGNOSTICOS\"];\n";
     dot += "  HOSPITAL -> PACIENTES;\n";
     dot += "  HOSPITAL -> MEDICOS;\n";
