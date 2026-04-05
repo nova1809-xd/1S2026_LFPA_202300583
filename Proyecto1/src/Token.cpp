@@ -57,6 +57,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::MEDICO:             return "MEDICO";
         case TokenType::CITA:               return "CITA";
         case TokenType::DIAGNOSTICO:        return "DIAGNOSTICO";
+        case TokenType::CON:                return "CON";
         
         // especialidades
         case TokenType::CARDIOLOGIA:        return "CARDIOLOGIA";

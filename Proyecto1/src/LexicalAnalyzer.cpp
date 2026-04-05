@@ -21,6 +21,7 @@ void LexicalAnalyzer::inicializarPalabrasReservadas() {
     palabrasReservadas["medico"] = TokenType::MEDICO;
     palabrasReservadas["cita"] = TokenType::CITA;
     palabrasReservadas["diagnostico"] = TokenType::DIAGNOSTICO;
+    palabrasReservadas["con"] = TokenType::CON;
     
     // palabras para los elementos (PascalCase - formato nuevo)
     palabrasReservadas["Paciente"] = TokenType::PACIENTE;
