@@ -70,7 +70,8 @@ enum class TokenType {
     
     // casos especiales
     EOF_TOKEN,              // fin del archivo
-    ERROR_TOKEN             // algo anduvo mal en el análisis
+    ERROR_TOKEN,             // algo anduvo mal en el análisis
+    CON
 };
 
 // representa cada token que reconozco en el análisis
