@@ -1,0 +1,16 @@
+digraph MedLexer {
+  rankdir=LR;
+  node [shape=box, style=filled, fillcolor=lightblue, fontname=Helvetica];
+  HOSPITAL [label="HOSPITAL"];
+  PACIENTES [label="PACIENTES (1)"];
+  MEDICOS [label="MEDICOS (1)"];
+  CITAS [label="CITAS (1)"];
+  DIAGNOSTICOS [label="DIAGNOSTICOS"];
+  HOSPITAL -> PACIENTES;
+  HOSPITAL -> MEDICOS;
+  HOSPITAL -> CITAS;
+  HOSPITAL -> DIAGNOSTICOS;
+  PACIENTES -> CITAS;
+  MEDICOS -> CITAS;
+  CITAS -> DIAGNOSTICOS;
+}

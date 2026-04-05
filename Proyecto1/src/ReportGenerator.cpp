@@ -163,15 +163,16 @@ bool ReportGenerator::generarReporteEstadisticas(
     std::unordered_map<std::string, int> medicosPorEspecialidad;
     std::unordered_map<std::string, int> citasPorEspecialidad;
     std::unordered_map<std::string, int> pacientesPorEspecialidad;
-    std::unordered_map<std::string, std::string> especialidadPorCodigo;
+    std::unordered_map<std::string, std::string> especialidadPorMedico;
 
     for (const auto& m : medicos) {
         medicosPorEspecialidad[m.especialidad]++;
-        especialidadPorCodigo[m.codigo] = m.especialidad;
+        especialidadPorMedico[m.codigo] = m.especialidad;
+        especialidadPorMedico[m.medico] = m.especialidad;
     }
     for (const auto& c : citas) {
-        auto it = especialidadPorCodigo.find(c.medico);
-        if (it != especialidadPorCodigo.end()) {
+        auto it = especialidadPorMedico.find(c.medico);
+        if (it != especialidadPorMedico.end()) {
             citasPorEspecialidad[it->second]++;
             pacientesPorEspecialidad[it->second]++;
         }
