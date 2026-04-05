@@ -280,12 +280,35 @@ void extraerDatosDesdeTokens(
             std::string nombrePaciente = limpiarCadena(tokens[j].getLexema());
             ++j;
 
-            if (j >= tokens.size() || limpiarCadena(tokens[j].getLexema()) != "con") {
+            bool encontradoCon = false;
+            while (j < tokens.size() &&
+                   tokens[j].getTipo() != TokenType::CORCHETE_ABIERTO &&
+                   tokens[j].getTipo() != TokenType::PUNTO_Y_COMA &&
+                   tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+                if (tokens[j].getTipo() == TokenType::CON ||
+                    limpiarCadena(tokens[j].getLexema()) == "con") {
+                    encontradoCon = true;
+                    ++j;
+                    break;
+                }
+                ++j;
+            }
+
+            if (!encontradoCon) {
+                if (erroresSemanticos != nullptr) {
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": se esperaba 'con' en la cita del paciente '" + nombrePaciente + "'.");
+                }
                 continue;
             }
-            ++j;
 
             if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
+                if (erroresSemanticos != nullptr) {
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": se esperaba el nombre del médico (STRING) después de 'con' en la cita del paciente '" + nombrePaciente + "'.");
+                }
                 continue;
             }
             std::string nombreMedico = limpiarCadena(tokens[j].getLexema());
