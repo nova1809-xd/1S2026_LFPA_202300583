@@ -19,9 +19,8 @@ enum class TokenType {
     MEDICO,
     CITA,
     DIAGNOSTICO,
-    CON,                    // palabra clave "con" usada en citas
     
-    // las especialidades médicas que soporto
+    // las especialidades médicas que soporta
     CARDIOLOGIA,
     NEUROLOGIA,
     OFTALMOLOGIA,
