@@ -1,32 +1,14 @@
 HOSPITAL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PAC-010"
-    nombre: "Luis Garcia"
-    nacimiento: "2001-12-01"
-    sangre: "AB-"
-}
-
-MEDICOS
-Medico {
-    codigo: "MED-010"
-    nombre: "Dra. Solis"
-    especialidad: "NEUROLOGIA"
-}
-
-CITAS
-Cita {
-    codigo: "CIT-010"
-    paciente: "PAC-010"
-    medico: "MED-010"
-    fecha: "2026-04-11"
-    hora: "14:05"
-}
-
-DIAGNOSTICOS
-Diagnostico {
-    cita: "CIT-010"
-    detalle: "Evaluacion inicial"
-}
+PACIENTES {
+paciente:"Luis Garcia"[edad:23,tipo_sangre:"AB-",habitacion:210],
+};
+MEDICOS {
+medico:"Dra. Solis"[especialidad:NEUROLOGIA,codigo:"MED-010"],
+};
+CITAS {
+cita:"Luis Garcia" con "Dra. Solis"[fecha:2026-04-11,hora:14:05,codigo:"CIT-010"],
+};
+DIAGNOSTICOS {
+diagnostico:"Luis Garcia"[condicion:"Evaluacion inicial",medicamento:"Ibuprofeno",dosis:CADA_8_HORAS],
+};
+};

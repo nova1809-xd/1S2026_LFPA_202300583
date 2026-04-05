@@ -1,54 +1,18 @@
 HOSPITAL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PAC-101"
-    nombre: "Marta Rodriguez"
-    nacimiento: "1988-01-22"
-    sangre: "A-"
-}
-Paciente {
-    codigo: "PAC-102"
-    nombre: "Carlos Mendoza"
-    nacimiento: "1992-03-10"
-    sangre: "B+"
-}
-
-MEDICOS
-Medico {
-    codigo: "MED-101"
-    nombre: "Dr. Vega"
-    especialidad: "ONCOLOGIA"
-}
-Medico {
-    codigo: "MED-102"
-    nombre: "Dr. Morales"
-    especialidad: "GASTROENTEROLOGIA"
-}
-
-CITAS
-Cita {
-    codigo: "CIT-101"
-    paciente: "PAC-101"
-    medico: "MED-101"
-    fecha: "2026-05-02"
-    hora: "08:00"
-}
-Cita {
-    codigo: "CIT-102"
-    paciente: "PAC-102"
-    medico: "MED-102"
-    fecha: "2026-05-03"
-    hora: "10:30"
-}
-
-DIAGNOSTICOS
-Diagnostico {
-    cita: "CIT-101"
-    detalle: "Seguimiento post-operatorio"
-}
-Diagnostico {
-    cita: "CIT-102"
-    detalle: "Evaluacion de sintomas gastrointestinales"
-}
+  PACIENTES {
+    paciente: "Marta Rodriguez" [edad: 38, tipo_sangre: "A-", habitacion: 110],
+    paciente: "Carlos Mendoza" [edad: 33, tipo_sangre: "B+", habitacion: 111],
+  };
+  MEDICOS {
+    medico: "Dr. Vega" [especialidad: ONCOLOGIA, codigo: "MED-101"],
+    medico: "Dr. Morales" [especialidad: GASTROENTEROLOGIA, codigo: "MED-102"],
+  };
+  CITAS {
+    cita: "Marta Rodriguez" con "Dr. Vega" [fecha: 2026-05-02, hora: 08:00, codigo: "CIT-101"],
+    cita: "Carlos Mendoza" con "Dr. Morales" [fecha: 2026-05-03, hora: 10:30, codigo: "CIT-102"],
+  };
+  DIAGNOSTICOS {
+    diagnostico: "Marta Rodriguez" [condicion: "Seguimiento", medicamento: "Losartan", dosis: DIARIA],
+    diagnostico: "Carlos Mendoza" [condicion: "Dolor abdominal", medicamento: "Omeprazol", dosis: CADA_12_HORAS],
+  };
+};

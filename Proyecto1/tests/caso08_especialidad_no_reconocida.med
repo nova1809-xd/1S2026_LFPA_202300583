@@ -1,28 +1,14 @@
 HOSPITAL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PAC-004"
-    nombre: "Leo Fernández"
-    sangre: "AB+"
-    nacimiento: "1995-07-07"
-}
-
-MEDICOS
-Medico {
-    codigo: "MED-004"
-    nombre: "Dr. Mora"
-    especialidad: "Cardio"
-}
-
-CITAS
-Cita {
-    codigo: "CIT-004"
-    paciente: "PAC-004"
-    medico: "MED-004"
-    fecha: "2026-07-01"
-    hora: "11:15"
-}
-
-DIAGNOSTICOS
+  PACIENTES {
+    paciente: "Leo Fernandez" [edad: 31, tipo_sangre: "AB+", habitacion: 115],
+  };
+  MEDICOS {
+    medico: "Dr. Mora" [especialidad: Cardio, codigo: "MED-004"],
+  };
+  CITAS {
+    cita: "Leo Fernandez" con "Dr. Mora" [fecha: 2026-07-01, hora: 11:15, codigo: "CIT-004"],
+  };
+  DIAGNOSTICOS {
+    diagnostico: "Leo Fernandez" [condicion: "Dolor toracico", medicamento: "Atenolol", dosis: DIARIA],
+  };
+};

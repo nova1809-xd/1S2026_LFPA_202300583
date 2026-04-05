@@ -103,6 +103,7 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::CORCHETE_CERRADO:   return "CORCHETE_CERRADO (])";
         case TokenType::DOS_PUNTOS:         return "DOS_PUNTOS (:)";
         case TokenType::COMA:               return "COMA (,)";
+        case TokenType::PUNTO_Y_COMA:       return "PUNTO_Y_COMA (;)";
         
         // especiales
         case TokenType::EOF_TOKEN:          return "EOF_TOKEN";

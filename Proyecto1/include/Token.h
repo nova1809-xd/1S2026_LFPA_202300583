@@ -65,6 +65,7 @@ enum class TokenType {
     CORCHETE_CERRADO,       // ]
     DOS_PUNTOS,             // :
     COMA,                   // ,
+    PUNTO_Y_COMA,           // ;
     
     // casos especiales
     EOF_TOKEN,              // fin del archivo

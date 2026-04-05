@@ -91,15 +91,31 @@ bool esHoraValidaEstrica(const std::string& valor) {
     return hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59;
 }
 
+bool esEspecialidadValida(const std::string& valor) {
+    static const std::unordered_set<std::string> especialidadesValidas = {
+        "CARDIOLOGIA", "NEUROLOGIA", "OFTALMOLOGIA", "ORTOPEDIA", "PEDIATRIA",
+        "PSIQUIATRIA", "GASTROENTEROLOGIA", "UROLOGIA", "DERMATOLOGIA", "ONCOLOGIA"
+    };
+    return especialidadesValidas.find(valor) != especialidadesValidas.end();
+}
+
+bool esDosisValida(const std::string& valor) {
+    static const std::unordered_set<std::string> dosisValidas = {
+        "DIARIA", "CADA_8_HORAS", "CADA_12_HORAS", "CADA_6_HORAS",
+        "CADA_4_HORAS", "SEGUN_SEA_NECESARIO"
+    };
+    return dosisValidas.find(valor) != dosisValidas.end();
+}
+
 void extraerDatosDesdeTokens(
     const std::vector<Token>& tokens,
     std::vector<PacienteFila>& pacientes,
     std::vector<MedicoFila>& medicos,
     std::vector<CitaFila>& citas,
     std::vector<std::string>* erroresSemanticos = nullptr) {
-
-    std::unordered_map<std::string, std::string> detallePorCita;
-    std::unordered_map<std::string, size_t> indicePacientePorCodigo;
+    std::unordered_map<std::string, size_t> indicePacientePorNombre;
+    std::unordered_map<std::string, std::string> diagnosticoPorPaciente;
+    std::unordered_map<std::string, std::string> medicamentoPorPaciente;
     TokenType seccion = TokenType::ERROR_TOKEN;
 
     auto esTokenClaveCampo = [](TokenType tipo) {
@@ -110,19 +126,33 @@ void extraerDatosDesdeTokens(
                tipo == TokenType::DIAGNOSTICO;
     };
 
-    auto extraerCampos = [&](size_t inicio) {
+    auto extraerAtributosCorchete = [&](size_t& pos) {
         std::unordered_map<std::string, std::string> campos;
-        size_t j = inicio + 1;
-        while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
-            if (esTokenClaveCampo(tokens[j].getTipo()) && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
-                std::string clave = limpiarCadena(tokens[j].getLexema());
-                std::string valor = limpiarCadena(tokens[j + 2].getLexema());
+        if (pos >= tokens.size() || tokens[pos].getTipo() != TokenType::CORCHETE_ABIERTO) {
+            return campos;
+        }
+
+        ++pos;
+        while (pos < tokens.size() && tokens[pos].getTipo() != TokenType::CORCHETE_CERRADO) {
+            if (pos + 2 < tokens.size() &&
+                esTokenClaveCampo(tokens[pos].getTipo()) &&
+                tokens[pos + 1].getTipo() == TokenType::DOS_PUNTOS) {
+                std::string clave = limpiarCadena(tokens[pos].getLexema());
+                std::string valor = limpiarCadena(tokens[pos + 2].getLexema());
                 campos[clave] = valor;
-                j += 3;
+                pos += 3;
+                if (pos < tokens.size() && tokens[pos].getTipo() == TokenType::COMA) {
+                    ++pos;
+                }
             } else {
-                ++j;
+                ++pos;
             }
         }
+
+        if (pos < tokens.size() && tokens[pos].getTipo() == TokenType::CORCHETE_CERRADO) {
+            ++pos;
+        }
+
         return campos;
     };
 
@@ -135,41 +165,101 @@ void extraerDatosDesdeTokens(
             continue;
         }
 
-        if (seccion == TokenType::PACIENTES && tipo == TokenType::PACIENTE) {
-            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+        if (tipo == TokenType::COMA || tipo == TokenType::PUNTO_Y_COMA ||
+            tipo == TokenType::LLAVE_ABIERTA || tipo == TokenType::LLAVE_CERRADA) {
+            continue;
+        }
 
-            std::string nacimiento = limpiarCadena(campos["nacimiento"]);
-            if (!esFechaValidaEstrica(nacimiento)) {
-                if (erroresSemanticos != nullptr) {
-                    erroresSemanticos->push_back(
-                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
-                        ": fecha de nacimiento inválida para paciente ('" + nacimiento + "').");
-                }
+        if (seccion == TokenType::PACIENTES && tipo == TokenType::PACIENTE) {
+            size_t j = i + 1;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::DOS_PUNTOS) {
+                continue;
+            }
+            ++j;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
                 continue;
             }
 
+            std::string nombrePaciente = limpiarCadena(tokens[j].getLexema());
+            ++j;
+            while (j < tokens.size() && tokens[j].getTipo() != TokenType::CORCHETE_ABIERTO &&
+                   tokens[j].getTipo() != TokenType::PUNTO_Y_COMA && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+                ++j;
+            }
+
+            auto campos = extraerAtributosCorchete(j);
+
             PacienteFila fila;
-            std::string codigoPaciente = limpiarCadena(campos["codigo"]);
-            fila.paciente = limpiarCadena(campos["nombre"]);
-            fila.edad = calcularEdadDesdeFecha(nacimiento);
-            fila.sangre = limpiarCadena(campos["sangre"]);
+            fila.paciente = nombrePaciente;
+            fila.edad = 0;
+            if (!campos["edad"].empty()) {
+                try {
+                    fila.edad = std::stoi(campos["edad"]);
+                } catch (...) {
+                    if (erroresSemanticos != nullptr) {
+                        erroresSemanticos->push_back(
+                            "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                            ": edad inválida para paciente ('" + campos["edad"] + "').");
+                    }
+                    continue;
+                }
+            } else if (!campos["nacimiento"].empty()) {
+                if (!esFechaValidaEstrica(campos["nacimiento"])) {
+                    if (erroresSemanticos != nullptr) {
+                        erroresSemanticos->push_back(
+                            "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                            ": fecha de nacimiento inválida para paciente ('" + campos["nacimiento"] + "').");
+                    }
+                    continue;
+                }
+                fila.edad = calcularEdadDesdeFecha(campos["nacimiento"]);
+            }
+
+            fila.sangre = !campos["tipo_sangre"].empty() ? campos["tipo_sangre"] : "sin dato";
             fila.diagnostico = "sin dato";
             fila.medicamento = "sin dato";
             fila.estado = "sin dato";
-            pacientes.push_back(fila);
-            if (!codigoPaciente.empty()) {
-                indicePacientePorCodigo[codigoPaciente] = pacientes.size() - 1;
+
+            if (!fila.paciente.empty()) {
+                pacientes.push_back(fila);
+                indicePacientePorNombre[fila.paciente] = pacientes.size() - 1;
             }
             continue;
         }
 
         if (seccion == TokenType::MEDICOS && tipo == TokenType::MEDICO) {
-            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+            size_t j = i + 1;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::DOS_PUNTOS) {
+                continue;
+            }
+            ++j;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
+                continue;
+            }
+
+            std::string nombreMedico = limpiarCadena(tokens[j].getLexema());
+            ++j;
+            while (j < tokens.size() && tokens[j].getTipo() != TokenType::CORCHETE_ABIERTO &&
+                   tokens[j].getTipo() != TokenType::PUNTO_Y_COMA && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+                ++j;
+            }
+
+            auto campos = extraerAtributosCorchete(j);
+
+            std::string especialidad = !campos["especialidad"].empty() ? campos["especialidad"] : "sin dato";
+            if (especialidad != "sin dato" && !esEspecialidadValida(especialidad)) {
+                if (erroresSemanticos != nullptr) {
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": especialidad inválida para médico ('" + especialidad + "').");
+                }
+                continue;
+            }
 
             MedicoFila fila;
-            fila.medico = limpiarCadena(campos["nombre"]);
-            fila.codigo = limpiarCadena(campos["codigo"]);
-            fila.especialidad = limpiarCadena(campos["especialidad"]);
+            fila.medico = nombreMedico;
+            fila.codigo = !campos["codigo"].empty() ? campos["codigo"] : "sin dato";
+            fila.especialidad = especialidad;
             fila.citas = 0;
             fila.pacientes = 0;
             fila.nivelCarga = "baja";
@@ -178,23 +268,51 @@ void extraerDatosDesdeTokens(
         }
 
         if (seccion == TokenType::CITAS && tipo == TokenType::CITA) {
-            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+            size_t j = i + 1;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::DOS_PUNTOS) {
+                continue;
+            }
+            ++j;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
+                continue;
+            }
 
-            std::string fecha = limpiarCadena(campos["fecha"]);
-            std::string hora = limpiarCadena(campos["hora"]);
+            std::string nombrePaciente = limpiarCadena(tokens[j].getLexema());
+            ++j;
+
+            if (j >= tokens.size() || limpiarCadena(tokens[j].getLexema()) != "con") {
+                continue;
+            }
+            ++j;
+
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
+                continue;
+            }
+            std::string nombreMedico = limpiarCadena(tokens[j].getLexema());
+            ++j;
+
+            while (j < tokens.size() && tokens[j].getTipo() != TokenType::CORCHETE_ABIERTO &&
+                   tokens[j].getTipo() != TokenType::PUNTO_Y_COMA && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+                ++j;
+            }
+
+            auto campos = extraerAtributosCorchete(j);
+            std::string fecha = campos["fecha"];
+            std::string hora = campos["hora"];
+
             if (!esFechaValidaEstrica(fecha) || !esHoraValidaEstrica(hora)) {
                 if (erroresSemanticos != nullptr) {
-                    std::string detalle = "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
-                        ": cita descartada por fecha/hora inválida (fecha='" + fecha + "', hora='" + hora + "').";
-                    erroresSemanticos->push_back(detalle);
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": cita descartada por fecha/hora inválida (fecha='" + fecha + "', hora='" + hora + "').");
                 }
                 continue;
             }
 
             CitaFila fila;
-            fila.codigo = limpiarCadena(campos["codigo"]);
-            fila.paciente = limpiarCadena(campos["paciente"]);
-            fila.medico = limpiarCadena(campos["medico"]);
+            fila.codigo = !campos["codigo"].empty() ? campos["codigo"] : "sin dato";
+            fila.paciente = nombrePaciente;
+            fila.medico = nombreMedico;
             fila.fecha = fecha;
             fila.hora = hora;
             citas.push_back(fila);
@@ -202,29 +320,52 @@ void extraerDatosDesdeTokens(
         }
 
         if (seccion == TokenType::DIAGNOSTICOS && tipo == TokenType::DIAGNOSTICO) {
-            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+            size_t j = i + 1;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::DOS_PUNTOS) {
+                continue;
+            }
+            ++j;
+            if (j >= tokens.size() || tokens[j].getTipo() != TokenType::STRING) {
+                continue;
+            }
 
-            if (!campos["cita"].empty() && !campos["detalle"].empty()) {
-                detallePorCita[limpiarCadena(campos["cita"])] = limpiarCadena(campos["detalle"]);
+            std::string nombrePaciente = limpiarCadena(tokens[j].getLexema());
+            ++j;
+            while (j < tokens.size() && tokens[j].getTipo() != TokenType::CORCHETE_ABIERTO &&
+                   tokens[j].getTipo() != TokenType::PUNTO_Y_COMA && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+                ++j;
+            }
+
+            auto campos = extraerAtributosCorchete(j);
+            std::string dosis = !campos["dosis"].empty() ? campos["dosis"] : "sin dato";
+            if (dosis != "sin dato" && !esDosisValida(dosis)) {
+                if (erroresSemanticos != nullptr) {
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": dosis inválida en diagnóstico ('" + dosis + "').");
+                }
+                continue;
+            }
+            if (!campos["condicion"].empty()) {
+                diagnosticoPorPaciente[nombrePaciente] = campos["condicion"];
+            }
+            if (!campos["medicamento"].empty()) {
+                medicamentoPorPaciente[nombrePaciente] = campos["medicamento"];
             }
             continue;
         }
     }
 
-    std::unordered_map<std::string, CitaFila> citaPorCodigo;
-    for (const auto& c : citas) {
-        citaPorCodigo[c.codigo] = c;
-    }
-
-    for (const auto& entry : detallePorCita) {
-        auto itCita = citaPorCodigo.find(entry.first);
-        if (itCita != citaPorCodigo.end()) {
-            auto itPaciente = indicePacientePorCodigo.find(itCita->second.paciente);
-            if (itPaciente != indicePacientePorCodigo.end()) {
-                PacienteFila& p = pacientes[itPaciente->second];
-                p.diagnostico = entry.second;
-                p.estado = "en tratamiento";
-            }
+    for (auto& p : pacientes) {
+        auto itDiag = diagnosticoPorPaciente.find(p.paciente);
+        if (itDiag != diagnosticoPorPaciente.end()) {
+            p.diagnostico = itDiag->second;
+            p.estado = "en tratamiento";
+        }
+        auto itMed = medicamentoPorPaciente.find(p.paciente);
+        if (itMed != medicamentoPorPaciente.end()) {
+            p.medicamento = itMed->second;
+            p.estado = "en tratamiento";
         }
     }
 
@@ -236,8 +377,14 @@ void extraerDatosDesdeTokens(
     }
 
     for (auto& m : medicos) {
-        m.citas = citasPorMedico[m.codigo];
-        m.pacientes = static_cast<int>(pacientesPorMedico[m.codigo].size());
+        int citasPorNombre = citasPorMedico[m.medico];
+        int citasPorCodigo = citasPorMedico[m.codigo];
+        m.citas = (citasPorCodigo > 0) ? citasPorCodigo : citasPorNombre;
+
+        int pacientesPorNombreCount = static_cast<int>(pacientesPorMedico[m.medico].size());
+        int pacientesPorCodigoCount = static_cast<int>(pacientesPorMedico[m.codigo].size());
+        m.pacientes = (pacientesPorCodigoCount > 0) ? pacientesPorCodigoCount : pacientesPorNombreCount;
+
         if (m.citas >= 10) {
             m.nivelCarga = "alta";
         } else if (m.citas >= 5) {

@@ -1,33 +1,14 @@
 HOSPITL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PA-01"
-    nombre: "X"
-    sangre: "O++"
-    nacimiento: "2026-99-99"
-    alias: "@bad"
-}
-
-MEDICOS
-Medico {
-    codigo: "MED-00A"
-    nombre: "Dr.#"
-    especialidad: "Cardio"
-}
-
-CITAS
-Cta {
-    codigo: "CIT-009"
-    paciente: "PAC-009"
-    medico: "MED-009"
-    fecha: "2026-15-40"
-    hora: "30:70"
-}
-
-DIAGNOSTICOS
-Diagnostico {
-    cita: "CIT-009"
-    detalle: "???"
-}
+  PACIENTES {
+    paciente: "X" [edad: xx, tipo_sangre: "O++", habitacion: @bad],
+  };
+  MEDICOS {
+    medico: "Dr.#" [especialidad: Cardio, codigo: "MED-00A"],
+  };
+  CITAS {
+    cta: "PAC-009" con "MED-009" [fecha: 2026-15-40, hora: 30:70],
+  };
+  DIAGNOSTICOS {
+    diagnostico: "X" [condicion: "???", medicamento: "???", dosis: CADA_99_HORAS],
+  };
+};

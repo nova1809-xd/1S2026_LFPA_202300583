@@ -1,16 +1,8 @@
 HOSPITAL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PAC-001"
-    nombre: "Nombre sin cierre
-    sangre: "O+"
-    nacimiento: "1990-10-10"
-}
-
-MEDICOS
-
-CITAS
-
-DIAGNOSTICOS
+  PACIENTES {
+    paciente: "Nombre sin cierre [edad: 30, tipo_sangre: "O+", habitacion: 101],
+  };
+  MEDICOS {
+    medico: "Dr. Neri" [especialidad: PEDIATRIA, codigo: "MED-003"],
+  };
+};

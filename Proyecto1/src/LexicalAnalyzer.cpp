@@ -146,7 +146,7 @@ Token LexicalAnalyzer::reconocerCodigoID(int linea, int columna) {
     auto esSeparador = [this](char c) -> bool {
         return c == '\0' || esEspacio(c) || c == '\n' ||
                c == '{' || c == '}' || c == '[' || c == ']' ||
-               c == ':' || c == ',';
+               c == ':' || c == ',' || c == ';';
     };
 
     auto consumirLexemaCorrupto = [&]() {
@@ -266,7 +266,7 @@ Token LexicalAnalyzer::reconocerFecha(int linea, int columna) {
     auto esSeparador = [this](char c) -> bool {
         return c == '\0' || esEspacio(c) || c == '\n' ||
                c == '{' || c == '}' || c == '[' || c == ']' ||
-               c == ':' || c == ',';
+               c == ':' || c == ',' || c == ';';
     };
 
     auto consumirLexemaCorrupto = [&]() {
@@ -321,7 +321,7 @@ Token LexicalAnalyzer::reconocerHora(int linea, int columna) {
     auto esSeparador = [this](char c) -> bool {
         return c == '\0' || esEspacio(c) || c == '\n' ||
                c == '{' || c == '}' || c == '[' || c == ']' ||
-               c == ':' || c == ',';
+               c == ':' || c == ',' || c == ';';
     };
 
     auto consumirLexemaCorrupto = [&]() {
@@ -399,7 +399,7 @@ Token LexicalAnalyzer::reconocerTipoSangre(int linea, int columna) {
 
     while (posicion < codigoFuente.length()) {
         char c = caracterActual();
-        if (esEspacio(c) || c == '\n' || c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',') {
+        if (esEspacio(c) || c == '\n' || c == '{' || c == '}' || c == '[' || c == ']' || c == ':' || c == ',' || c == ';') {
             break;
         }
         avanzar();
@@ -461,6 +461,10 @@ Token LexicalAnalyzer::nextToken() {
     if (actual == ',') {
         avanzar();
         return Token(",", TokenType::COMA, tokenLinea, tokenColumna);
+    }
+    if (actual == ';') {
+        avanzar();
+        return Token(";", TokenType::PUNTO_Y_COMA, tokenLinea, tokenColumna);
     }
     
     // ===== reconocimiento de cadena de texto =====

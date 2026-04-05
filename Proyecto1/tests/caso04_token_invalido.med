@@ -1,32 +1,14 @@
 HOSPITAL {
-}
-
-PACIENTES
-Paciente {
-    codigo: "PAC-001"
-    nombre: "Ana" @
-    nacimiento: "1990-05-15"
-    sangre: "O+"
-}
-
-MEDICOS
-Medico {
-    codigo: "MED#001"
-    nombre: "Dr. Ruiz"
-    especialidad: "CARDIOLOGIA"
-}
-
-CITAS
-Cita {
-    codigo: "CIT-001"
-    paciente: "PAC-001"
-    medico: "MED-001"
-    fecha: "2026-04-10"
-    hora: "09:30"
-}
-
-DIAGNOSTICOS
-Diagnostico {
-    cita: "CIT-001"
-    detalle: "Control general"
-}
+  PACIENTES {
+    paciente: "Ana" [edad: 30, tipo_sangre: "O+", habitacion: @302],
+  };
+  MEDICOS {
+    medico: "Dr. Ruiz" [especialidad: CARDIOLOGIA, codigo: "MED-001"],
+  };
+  CITAS {
+    cita: "Ana" con "Dr. Ruiz" [fecha: 2026-04-10, hora: 09:30, codigo: "CIT-001"],
+  };
+  DIAGNOSTICOS {
+    diagnostico: "Ana" [condicion: "Control", medicamento: "Aspirina", dosis: DIARIA],
+  };
+};
