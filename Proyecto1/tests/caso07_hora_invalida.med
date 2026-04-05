@@ -1,5 +1,28 @@
-HOSPITAL { }
-PACIENTES { paciente { codigo: PAC-003, nombre: "Iris", sangre: O-, nacimiento: 1997-03-18 } }
-MEDICOS { medico { codigo: MED-003, nombre: "Dra. Neri", especialidad: PEDIATRIA } }
-CITAS { cita { codigo: CIT-003, paciente: PAC-003, medico: MED-003, fecha: 2026-06-20, hora: 25:00 } }
-DIAGNOSTICOS { }
+HOSPITAL {
+}
+
+PACIENTES
+Paciente {
+    codigo: "PAC-003"
+    nombre: "Iris Benítez"
+    sangre: "O-"
+    nacimiento: "1997-03-18"
+}
+
+MEDICOS
+Medico {
+    codigo: "MED-003"
+    nombre: "Dra. Neri"
+    especialidad: "PEDIATRIA"
+}
+
+CITAS
+Cita {
+    codigo: "CIT-003"
+    paciente: "PAC-003"
+    medico: "MED-003"
+    fecha: "2026-06-20"
+    hora: "25:00"
+}
+
+DIAGNOSTICOS

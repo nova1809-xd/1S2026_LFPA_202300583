@@ -1,14 +1,32 @@
-HOSPITAL{
+HOSPITAL {
 }
-PACIENTES{
-paciente{codigo:PAC-010,nombre:"Luis",sangre:AB-,nacimiento:2001-12-01}
+
+PACIENTES
+Paciente {
+    codigo: "PAC-010"
+    nombre: "Luis Garcia"
+    nacimiento: "2001-12-01"
+    sangre: "AB-"
 }
-MEDICOS{
-medico{codigo:MED-010,nombre:"Dra. Solis",especialidad:NEUROLOGIA}
+
+MEDICOS
+Medico {
+    codigo: "MED-010"
+    nombre: "Dra. Solis"
+    especialidad: "NEUROLOGIA"
 }
-CITAS{
-cita{codigo:CIT-010,paciente:PAC-010,medico:MED-010,fecha:2026-04-11,hora:14:05}
+
+CITAS
+Cita {
+    codigo: "CIT-010"
+    paciente: "PAC-010"
+    medico: "MED-010"
+    fecha: "2026-04-11"
+    hora: "14:05"
 }
-DIAGNOSTICOS{
-diagnostico{codigo:DIA-010,cita:CIT-010,detalle:"Evaluacion inicial"}
+
+DIAGNOSTICOS
+Diagnostico {
+    cita: "CIT-010"
+    detalle: "Evaluacion inicial"
 }

@@ -1,7 +1,16 @@
-HOSPITAL { }
-PACIENTES {
-  paciente { codigo: PAC-001, nombre: "Nombre sin cierre, sangre: O+, nacimiento: 1990-10-10 }
+HOSPITAL {
 }
-MEDICOS { }
-CITAS { }
-DIAGNOSTICOS { }
+
+PACIENTES
+Paciente {
+    codigo: "PAC-001"
+    nombre: "Nombre sin cierre
+    sangre: "O+"
+    nacimiento: "1990-10-10"
+}
+
+MEDICOS
+
+CITAS
+
+DIAGNOSTICOS

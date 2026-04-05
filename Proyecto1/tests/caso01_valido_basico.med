@@ -1,14 +1,54 @@
 HOSPITAL {
 }
-PACIENTES {
-  paciente { codigo: PAC-001, nombre: "Ana", sangre: O+, nacimiento: 1999-05-10 }
+
+PACIENTES
+Paciente {
+    codigo: "PAC-001"
+    nombre: "Ana Lopez"
+    nacimiento: "1990-05-15"
+    sangre: "O+"
 }
-MEDICOS {
-  medico { codigo: MED-001, nombre: "Dr. Ruiz", especialidad: CARDIOLOGIA }
+Paciente {
+    codigo: "PAC-002"
+    nombre: "Luis Perez"
+    nacimiento: "1985-11-20"
+    sangre: "A-"
 }
-CITAS {
-  cita { codigo: CIT-001, paciente: PAC-001, medico: MED-001, fecha: 2026-04-10, hora: 09:30 }
+
+MEDICOS
+Medico {
+    codigo: "MED-001"
+    nombre: "Dr. Ruiz"
+    especialidad: "CARDIOLOGIA"
 }
-DIAGNOSTICOS {
-  diagnostico { codigo: DIA-001, cita: CIT-001, detalle: "Control general" }
+Medico {
+    codigo: "MED-002"
+    nombre: "Dra. Solis"
+    especialidad: "NEUROLOGIA"
+}
+
+CITAS
+Cita {
+    codigo: "CIT-001"
+    paciente: "PAC-001"
+    medico: "MED-001"
+    fecha: "2026-04-10"
+    hora: "09:30"
+}
+Cita {
+    codigo: "CIT-002"
+    paciente: "PAC-002"
+    medico: "MED-002"
+    fecha: "2026-04-11"
+    hora: "14:00"
+}
+
+DIAGNOSTICOS
+Diagnostico {
+    cita: "CIT-001"
+    detalle: "Presion arterial alta, se recomienda reposo"
+}
+Diagnostico {
+    cita: "CIT-002"
+    detalle: "Migranas recurrentes, requiere seguimiento"
 }

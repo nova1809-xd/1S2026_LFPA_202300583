@@ -1,5 +1,32 @@
-HOSPITAL { }
-PACIENTES { paciente { codigo: PAC-001, nombre: "Ana" @ } }
-MEDICOS { medico { codigo: MED-001, nombre: "Dr#Ruiz", especialidad: CARDIOLOGIA } }
-CITAS { }
-DIAGNOSTICOS { }
+HOSPITAL {
+}
+
+PACIENTES
+Paciente {
+    codigo: "PAC-001"
+    nombre: "Ana" @
+    nacimiento: "1990-05-15"
+    sangre: "O+"
+}
+
+MEDICOS
+Medico {
+    codigo: "MED#001"
+    nombre: "Dr. Ruiz"
+    especialidad: "CARDIOLOGIA"
+}
+
+CITAS
+Cita {
+    codigo: "CIT-001"
+    paciente: "PAC-001"
+    medico: "MED-001"
+    fecha: "2026-04-10"
+    hora: "09:30"
+}
+
+DIAGNOSTICOS
+Diagnostico {
+    cita: "CIT-001"
+    detalle: "Control general"
+}

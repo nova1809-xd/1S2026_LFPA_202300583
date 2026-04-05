@@ -16,11 +16,17 @@ void LexicalAnalyzer::inicializarPalabrasReservadas() {
     palabrasReservadas["CITAS"] = TokenType::CITAS;
     palabrasReservadas["DIAGNOSTICOS"] = TokenType::DIAGNOSTICOS;
     
-    // palabras para los elementos
+    // palabras para los elementos (minúsculas - formato antiguo)
     palabrasReservadas["paciente"] = TokenType::PACIENTE;
     palabrasReservadas["medico"] = TokenType::MEDICO;
     palabrasReservadas["cita"] = TokenType::CITA;
     palabrasReservadas["diagnostico"] = TokenType::DIAGNOSTICO;
+    
+    // palabras para los elementos (PascalCase - formato nuevo)
+    palabrasReservadas["Paciente"] = TokenType::PACIENTE;
+    palabrasReservadas["Medico"] = TokenType::MEDICO;
+    palabrasReservadas["Cita"] = TokenType::CITA;
+    palabrasReservadas["Diagnostico"] = TokenType::DIAGNOSTICO;
     
     // las especialidades
     palabrasReservadas["CARDIOLOGIA"] = TokenType::CARDIOLOGIA;

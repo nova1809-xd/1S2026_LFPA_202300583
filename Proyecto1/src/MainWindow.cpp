@@ -53,15 +53,78 @@ int calcularEdadDesdeFecha(const std::string& fecha) {
     return edad;
 }
 
+bool esDigito(char c) {
+    return c >= '0' && c <= '9';
+}
+
+bool esFechaValidaEstrica(const std::string& valor) {
+    if (valor.size() != 10) {
+        return false;
+    }
+    if (!esDigito(valor[0]) || !esDigito(valor[1]) || !esDigito(valor[2]) || !esDigito(valor[3]) ||
+        valor[4] != '-' ||
+        !esDigito(valor[5]) || !esDigito(valor[6]) ||
+        valor[7] != '-' ||
+        !esDigito(valor[8]) || !esDigito(valor[9])) {
+        return false;
+    }
+
+    int mes = (valor[5] - '0') * 10 + (valor[6] - '0');
+    int dia = (valor[8] - '0') * 10 + (valor[9] - '0');
+
+    return mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31;
+}
+
+bool esHoraValidaEstrica(const std::string& valor) {
+    if (valor.size() != 5) {
+        return false;
+    }
+    if (!esDigito(valor[0]) || !esDigito(valor[1]) ||
+        valor[2] != ':' ||
+        !esDigito(valor[3]) || !esDigito(valor[4])) {
+        return false;
+    }
+
+    int hh = (valor[0] - '0') * 10 + (valor[1] - '0');
+    int mm = (valor[3] - '0') * 10 + (valor[4] - '0');
+
+    return hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59;
+}
+
 void extraerDatosDesdeTokens(
     const std::vector<Token>& tokens,
     std::vector<PacienteFila>& pacientes,
     std::vector<MedicoFila>& medicos,
-    std::vector<CitaFila>& citas) {
+    std::vector<CitaFila>& citas,
+    std::vector<std::string>* erroresSemanticos = nullptr) {
 
     std::unordered_map<std::string, std::string> detallePorCita;
     std::unordered_map<std::string, size_t> indicePacientePorCodigo;
     TokenType seccion = TokenType::ERROR_TOKEN;
+
+    auto esTokenClaveCampo = [](TokenType tipo) {
+        return tipo == TokenType::IDENTIFICADOR ||
+               tipo == TokenType::PACIENTE ||
+               tipo == TokenType::MEDICO ||
+               tipo == TokenType::CITA ||
+               tipo == TokenType::DIAGNOSTICO;
+    };
+
+    auto extraerCampos = [&](size_t inicio) {
+        std::unordered_map<std::string, std::string> campos;
+        size_t j = inicio + 1;
+        while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
+            if (esTokenClaveCampo(tokens[j].getTipo()) && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
+                std::string clave = limpiarCadena(tokens[j].getLexema());
+                std::string valor = limpiarCadena(tokens[j + 2].getLexema());
+                campos[clave] = valor;
+                j += 3;
+            } else {
+                ++j;
+            }
+        }
+        return campos;
+    };
 
     for (size_t i = 0; i < tokens.size(); ++i) {
         TokenType tipo = tokens[i].getTipo();
@@ -73,22 +136,23 @@ void extraerDatosDesdeTokens(
         }
 
         if (seccion == TokenType::PACIENTES && tipo == TokenType::PACIENTE) {
-            std::unordered_map<std::string, std::string> campos;
-            size_t j = i + 1;
-            while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
-                if (tokens[j].getTipo() == TokenType::IDENTIFICADOR && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
-                    campos[tokens[j].getLexema()] = tokens[j + 2].getLexema();
-                    j += 3;
-                } else {
-                    ++j;
+            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+
+            std::string nacimiento = limpiarCadena(campos["nacimiento"]);
+            if (!esFechaValidaEstrica(nacimiento)) {
+                if (erroresSemanticos != nullptr) {
+                    erroresSemanticos->push_back(
+                        "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": fecha de nacimiento inválida para paciente ('" + nacimiento + "').");
                 }
+                continue;
             }
 
             PacienteFila fila;
-            std::string codigoPaciente = campos["codigo"];
+            std::string codigoPaciente = limpiarCadena(campos["codigo"]);
             fila.paciente = limpiarCadena(campos["nombre"]);
-            fila.edad = calcularEdadDesdeFecha(campos["nacimiento"]);
-            fila.sangre = campos["sangre"];
+            fila.edad = calcularEdadDesdeFecha(nacimiento);
+            fila.sangre = limpiarCadena(campos["sangre"]);
             fila.diagnostico = "sin dato";
             fila.medicamento = "sin dato";
             fila.estado = "sin dato";
@@ -100,21 +164,12 @@ void extraerDatosDesdeTokens(
         }
 
         if (seccion == TokenType::MEDICOS && tipo == TokenType::MEDICO) {
-            std::unordered_map<std::string, std::string> campos;
-            size_t j = i + 1;
-            while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
-                if (tokens[j].getTipo() == TokenType::IDENTIFICADOR && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
-                    campos[tokens[j].getLexema()] = tokens[j + 2].getLexema();
-                    j += 3;
-                } else {
-                    ++j;
-                }
-            }
+            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
 
             MedicoFila fila;
             fila.medico = limpiarCadena(campos["nombre"]);
-            fila.codigo = campos["codigo"];
-            fila.especialidad = campos["especialidad"];
+            fila.codigo = limpiarCadena(campos["codigo"]);
+            fila.especialidad = limpiarCadena(campos["especialidad"]);
             fila.citas = 0;
             fila.pacientes = 0;
             fila.nivelCarga = "baja";
@@ -123,41 +178,34 @@ void extraerDatosDesdeTokens(
         }
 
         if (seccion == TokenType::CITAS && tipo == TokenType::CITA) {
-            std::unordered_map<std::string, std::string> campos;
-            size_t j = i + 1;
-            while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
-                if (tokens[j].getTipo() == TokenType::IDENTIFICADOR && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
-                    campos[tokens[j].getLexema()] = tokens[j + 2].getLexema();
-                    j += 3;
-                } else {
-                    ++j;
+            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
+
+            std::string fecha = limpiarCadena(campos["fecha"]);
+            std::string hora = limpiarCadena(campos["hora"]);
+            if (!esFechaValidaEstrica(fecha) || !esHoraValidaEstrica(hora)) {
+                if (erroresSemanticos != nullptr) {
+                    std::string detalle = "Error semántico en línea " + std::to_string(tokens[i].getLinea()) +
+                        ": cita descartada por fecha/hora inválida (fecha='" + fecha + "', hora='" + hora + "').";
+                    erroresSemanticos->push_back(detalle);
                 }
+                continue;
             }
 
             CitaFila fila;
-            fila.codigo = campos["codigo"];
-            fila.paciente = campos["paciente"];
-            fila.medico = campos["medico"];
-            fila.fecha = campos["fecha"];
-            fila.hora = campos["hora"];
+            fila.codigo = limpiarCadena(campos["codigo"]);
+            fila.paciente = limpiarCadena(campos["paciente"]);
+            fila.medico = limpiarCadena(campos["medico"]);
+            fila.fecha = fecha;
+            fila.hora = hora;
             citas.push_back(fila);
             continue;
         }
 
         if (seccion == TokenType::DIAGNOSTICOS && tipo == TokenType::DIAGNOSTICO) {
-            std::unordered_map<std::string, std::string> campos;
-            size_t j = i + 1;
-            while (j + 2 < tokens.size() && tokens[j].getTipo() != TokenType::LLAVE_CERRADA) {
-                if (tokens[j].getTipo() == TokenType::IDENTIFICADOR && tokens[j + 1].getTipo() == TokenType::DOS_PUNTOS) {
-                    campos[tokens[j].getLexema()] = tokens[j + 2].getLexema();
-                    j += 3;
-                } else {
-                    ++j;
-                }
-            }
+            std::unordered_map<std::string, std::string> campos = extraerCampos(i);
 
             if (!campos["cita"].empty() && !campos["detalle"].empty()) {
-                detallePorCita[campos["cita"]] = limpiarCadena(campos["detalle"]);
+                detallePorCita[limpiarCadena(campos["cita"])] = limpiarCadena(campos["detalle"]);
             }
             continue;
         }
@@ -255,7 +303,7 @@ void MainWindow::configurarTablas() {
     tablaTokens->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     tablaErrores->setColumnCount(1);
-    tablaErrores->setHorizontalHeaderLabels({"Errores Lexicos"});
+    tablaErrores->setHorizontalHeaderLabels({"Errores"});
     tablaErrores->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
@@ -282,6 +330,7 @@ void MainWindow::analizarCodigo() {
 
     QString texto = editorCodigo->toPlainText();
     LexicalAnalyzer analizador(texto.toStdString());
+    std::vector<Token> tokensValidos;
 
     while (true) {
         Token token = analizador.nextToken();
@@ -292,6 +341,8 @@ void MainWindow::analizarCodigo() {
         if (token.getTipo() == TokenType::ERROR_TOKEN) {
             continue;
         }
+
+        tokensValidos.push_back(token);
 
         int fila = tablaTokens->rowCount();
         tablaTokens->insertRow(fila);
@@ -306,6 +357,18 @@ void MainWindow::analizarCodigo() {
         int fila = tablaErrores->rowCount();
         tablaErrores->insertRow(fila);
         tablaErrores->setItem(fila, 0, new QTableWidgetItem(QString::fromStdString(errores[i])));
+    }
+
+    std::vector<PacienteFila> pacientesTmp;
+    std::vector<MedicoFila> medicosTmp;
+    std::vector<CitaFila> citasTmp;
+    std::vector<std::string> erroresSemanticos;
+    extraerDatosDesdeTokens(tokensValidos, pacientesTmp, medicosTmp, citasTmp, &erroresSemanticos);
+
+    for (const auto& err : erroresSemanticos) {
+        int fila = tablaErrores->rowCount();
+        tablaErrores->insertRow(fila);
+        tablaErrores->setItem(fila, 0, new QTableWidgetItem(QString::fromStdString(err)));
     }
 }
 
@@ -327,7 +390,8 @@ void MainWindow::generarReportes() {
     std::vector<PacienteFila> pacientes;
     std::vector<MedicoFila> medicos;
     std::vector<CitaFila> citas;
-    extraerDatosDesdeTokens(tokensValidos, pacientes, medicos, citas);
+    std::vector<std::string> erroresSemanticos;
+    extraerDatosDesdeTokens(tokensValidos, pacientes, medicos, citas, &erroresSemanticos);
 
     ReportGenerator generador("docs");
 

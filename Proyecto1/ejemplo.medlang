@@ -2,52 +2,80 @@
 # Este archivo demuestra la sintaxis del lenguaje MedLang
 
 HOSPITAL {
-    # Sección de pacientes
-    PACIENTES [
-        paciente {
-            codigo: PAC-001
-            nombre: "Juan Carlos Pérez García"
-            edad: 45
-            sangre: O+
-            fecha_nacimiento: 1978-06-15
-            especialidad: CARDIOLOGIA
-        }
-        
-        paciente {
-            codigo: PAC-002
-            nombre: "María Elena López Martínez"
-            edad: 32
-            sangre: AB-
-            fecha_nacimiento: 1991-03-22
-        }
-    ]
-    
-    # Sección de médicos
-    MEDICOS [
-        medico {
-            codigo: MED-001
-            nombre: "Dr. Roberto Flores"
-            especialidad: CARDIOLOGIA
-            horario_inicio: 08:00
-            horario_fin: 16:00
-        }
-        
-        medico {
-            codigo: MED-002
-            nombre: "Dra. Ana María Rodríguez"
-            especialidad: NEUROLOGIA
-            horario_inicio: 09:00
-            horario_fin: 17:00
-        }
-    ]
-    
-    # Sección de citas
-    CITAS [
-        cita {
-            codigo: CIT-001
-            paciente: PAC-001
-            medico: MED-001
-            fecha: 2024-12-20
+}
+
+PACIENTES
+Paciente {
+    codigo: "PAC-001"
+    nombre: "Juan Carlos Perez"
+    nacimiento: "1978-06-15"
+    sangre: "O+"
+}
+Paciente {
+    codigo: "PAC-002"
+    nombre: "Maria Elena Lopez"
+    nacimiento: "1991-03-22"
+    sangre: "AB-"
+}
+Paciente {
+    codigo: "PAC-003"
+    nombre: "Carlos Roberto Silva"
+    nacimiento: "1985-09-10"
+    sangre: "B+"
+}
+
+MEDICOS
+Medico {
+    codigo: "MED-001"
+    nombre: "Dr. Roberto Flores"
+    especialidad: "CARDIOLOGIA"
+}
+Medico {
+    codigo: "MED-002"
+    nombre: "Dra. Ana Maria Rodriguez"
+    especialidad: "NEUROLOGIA"
+}
+Medico {
+    codigo: "MED-003"
+    nombre: "Dr. Miguel Santos"
+    especialidad: "PEDIATRIA"
+}
+
+CITAS
+Cita {
+    codigo: "CIT-001"
+    paciente: "PAC-001"
+    medico: "MED-001"
+    fecha: "2026-04-10"
+    hora: "08:00"
+}
+Cita {
+    codigo: "CIT-002"
+    paciente: "PAC-002"
+    medico: "MED-002"
+    fecha: "2026-04-11"
+    hora: "10:30"
+}
+Cita {
+    codigo: "CIT-003"
+    paciente: "PAC-003"
+    medico: "MED-003"
+    fecha: "2026-04-12"
+    hora: "14:15"
+}
+
+DIAGNOSTICOS
+Diagnostico {
+    cita: "CIT-001"
+    detalle: "Presion arterial alta, requiere reposo y medicacion"
+}
+Diagnostico {
+    cita: "CIT-002"
+    detalle: "Migranas recurrentes, se recomienda seguimiento especializado"
+}
+Diagnostico {
+    cita: "CIT-003"
+    detalle: "Infeccion respiratoria, prescribir antibioticos"
             hora: 10:30
             lugar: "Consultorio A"
         }
