@@ -1,0 +1,33 @@
+HOSPITAL {
+    PACIENTES {
+        paciente: "María García" [edad: 45, tipo_sangre: "A+", habitacion: 302],
+        paciente: "Carlos Mendoza" [edad: 62, tipo_sangre: "O-", habitacion: 410],
+        paciente: "Sofía Ramírez" [edad: 29, tipo_sangre: "B+", habitacion: 115],
+        paciente: "Pedro Castillo" [edad: 71, tipo_sangre: "AB-", habitacion: 220],
+        paciente: "Elena Morales" [edad: 38, tipo_sangre: "O++", habitacion: 508],
+        paciente: "Roberto Flores" [edad: 55, tipo_sangre: "A-", habitacion: 103],
+    };
+
+    MEDICOS {
+        medico: "Dr. Roberto Juárez" [especialidad: CARDIOLOGIA, codigo: "MED-001"],
+        medico: "Dra. Ana Solís" [especialidad: NEUROLOGIA, codigo: "MED-002"],
+        medico: "Dr. Luis Herrera" [especialidad: PEDIATRIA, codigo: "MED-003"],
+        medico: "Dra. Carmen Vega" [especialidad: DERMATOLOGIA, codigo: "MED-004"],
+    };
+
+    CITAS {
+        cita: "María García" con "Dr. Roberto Juárez" [fecha: 2025-04-10, hora: 09:00],
+        cita: "Pedro Castillo" con "Dr. Roberto Juárez" [fecha: 2025-04-10, hora: 09:00],
+        cita: "Carlos Mendoza" con "Dra. Ana Solís" [fecha: 2025-04-10, hora: 11:30],
+        cita: "Sofía Ramírez" con "Dr. Luis Herrera" [fecha: 2025-13-05, hora: 08:00],
+        cita: "Elena Morales" con "Dra. Carmen Vega" [fecha: 2025-04-15, hora: 25:00],
+        cita: "Roberto Flores" con "Dr. Roberto Juárez" [fecha: 2025-04-12, hora: 10:00],
+    };
+
+    DIAGNOSTICOS {
+        diagnostico: "María García" [condicion: "Hipertensión Arterial", medicamento: "Losartán 50mg", dosis: DIARIA],
+        diagnostico: "Carlos Mendoza" [condicion: "Diabetes Tipo 2", medicamento: "Metformina 850mg", dosis: CADA_12_HORAS],
+        diagnostico: "Pedro Castillo" [condicion: "Insuficiencia Cardiaca", medicamento: "Furosemida 40mg", dosis: DIARIA],
+        diagnostico: "Roberto Flores" [condicion: "Arritmia Ventricular", medicamento: "Amiodarona 200mg", dosis: SEMANAL],
+    };
+};

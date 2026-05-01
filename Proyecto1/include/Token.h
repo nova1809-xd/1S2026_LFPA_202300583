@@ -49,6 +49,12 @@ enum class TokenType {
     TIPO_SANGRE_AB_NEG,     // AB-
     TIPO_SANGRE_O_POS,      // O+
     TIPO_SANGRE_O_NEG,      // O-
+
+    //genero
+    GENERO,
+    MASCULINO,
+    FEMENINO,
+    OTRO,
     
     // tipos de datos básicos del lenguaje
     INTEGER,                // números (ej: 42, 100)

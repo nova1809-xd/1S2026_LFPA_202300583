@@ -88,6 +88,13 @@ std::string Token::tipoToString(TokenType tipo) {
         case TokenType::TIPO_SANGRE_AB_NEG: return "TIPO_SANGRE_AB_NEG (AB-)";
         case TokenType::TIPO_SANGRE_O_POS:  return "TIPO_SANGRE_O_POS (O+)";
         case TokenType::TIPO_SANGRE_O_NEG:  return "TIPO_SANGRE_O_NEG (O-)";
+
+        // genero
+
+        case TokenType::GENERO:            return "GENERO";
+        case TokenType::MASCULINO:         return "MASCULINO";  
+        case TokenType::FEMENINO:          return "FEMENINO";
+        case TokenType::OTRO:              return "OTRO";
         
         // tipos de datos
         case TokenType::INTEGER:            return "INTEGER";

@@ -1,0 +1,61 @@
+HOSPITAL {
+    PACIENTES {
+        paciente: "María García" [edad: 45, tipo_sangre: "A+", habitacion: 302],
+        paciente: "Carlos Mendoza" [edad: 62, tipo_sangre: "O-", habitacion: 410],
+        paciente: "Sofía Ramírez" [edad: 29, tipo_sangre: "B+", habitacion: 115],
+        paciente: "Pedro Castillo" [edad: 71, tipo_sangre: "AB-", habitacion: 220],
+        paciente: "Elena Morales" [edad: 38, tipo_sangre: "O++", habitacion: 508],
+        paciente: "Roberto Flores" [edad: 55, tipo_sangre: "A-", habitacion: 103],
+        paciente: "Lucía Hernández" [edad: 42, tipo_sangre: "C+", habitacion: 607],
+        paciente: "Fernando Rivas" [edad: 33, tipo_sangre: "AB+", habitacion: 201],
+        paciente: "Andrea Pineda [edad: 27, tipo_sangre: "B-", habitacion: 312],
+        paciente: "Miguel Torres" [edad: 58, tipo_sangre: "O+", habitacion: 450],
+        paciente: "Gabriela Ruiz" [edad: 19, tipo_sangre: "A+", habitacion: 111],
+        paciente: "Raúl Domínguez" [edad: 66, tipo_sangre: "XY", habitacion: 505],
+    };
+
+    MEDICOS {
+        medico: "Dr. Roberto Juárez" [especialidad: CARDIOLOGIA, codigo: "MED-001"],
+        medico: "Dra. Ana Solís" [especialidad: NEUROLOGIA, codigo: "MED-002"],
+        medico: "Dr. Luis Herrera" [especialidad: PEDIATRIA, codigo: "MED-003"],
+        medico: "Dra. Carmen Vega" [especialidad: CIRUGIA, codigo: "MED-004"],
+        medico: "Dr. Marcos León" [especialidad: MEDICINA_GENERAL, codigo: "MED-005"],
+        medico: "Dra. Patricia Reyes" [especialidad: ONCOLOGIA, codigo: "MED-006"],
+        medico: "Dr. Enrique Paz" [especialidad: TRAUMATOLOGIA, codigo: "MED-007"],
+        medico: "Dra. Isabel Cruz" [especialidad: CARDIOLOGIA, codigo: "MED-008"],
+    };
+
+    CITAS {
+        cita: "María García" con "Dr. Roberto Juárez" [fecha: 2025-04-10, hora: 09:00],
+        cita: "Pedro Castillo" con "Dr. Roberto Juárez" [fecha: 2025-04-10, hora: 09:00],
+        cita: "Carlos Mendoza" con "Dra. Ana Solís" [fecha: 2025-04-10, hora: 11:30],
+        cita: "Sofía Ramírez" con "Dr. Luis Herrera" [fecha: 2025-04-11, hora: 08:00],
+        cita: "Elena Morales" con "Dra. Carmen Vega" [fecha: 2025-04-11, hora: 14:00],
+        cita: "Roberto Flores" con "Dr. Roberto Juárez" [fecha: 2025-04-12, hora: 10:00],
+        cita: "Fernando Rivas" con "Dr. Marcos León" [fecha: 2025-04-12, hora: 16:00],
+        cita: "Miguel Torres" con "Dra. Patricia Reyes" [fecha: 2025-13-01, hora: 09:30],
+        cita: "Gabriela Ruiz" con "Dra. Isabel Cruz" [fecha: 2025-04-15, hora: 25:00],
+        cita: "Lucía Hernández" con "Dra. Carmen Vega" [fecha: 2025-04-11, hora: 14:00],
+        cita: "Raúl Domínguez" con "Dr. Marcos León" [fecha: 2025-04-12, hora: 16:00],
+        cita: "María García" con "Dra. Ana Solís" [fecha: 2025-00-10, hora: 08:00],
+        cita: "Fernando Rivas" con "Dr. Enrique Paz" [fecha: 2025-04-20, hora: 10:60],
+        cita: "Andrea Pineda" con "Dr. Luis Herrera" [fecha: 2025-04-32, hora: 11:00],
+        cita: "Sofía Ramírez" con "Dra. Patricia Reyes" [fecha: 2025-04-18, hora: 09:00],
+        cita: "Pedro Castillo" con "Dra. Isabel Cruz" [fecha: 2025-04-19, hora: 15:30],
+        cita: "Miguel Torres" con "Dr. Roberto Juárez" [fecha: 2025-04-10, hora: 09:00],
+    };
+
+    DIAGNOSTICOS {
+        diagnostico: "María García" [condicion: "Hipertensión Arterial", medicamento: "Losartán 50mg", dosis: DIARIA],
+        diagnostico: "Carlos Mendoza" [condicion: "Diabetes Tipo 2", medicamento: "Metformina 850mg", dosis: CADA_12_HORAS],
+        diagnostico: "Pedro Castillo" [condicion: "Insuficiencia Cardiaca", medicamento: "Furosemida 40mg", dosis: DIARIA],
+        diagnostico: "Roberto Flores" [condicion: "Arritmia Ventricular", medicamento: "Amiodarona 200mg", dosis: SEMANAL],
+        diagnostico: "Elena Morales" [condicion: "Fractura de Fémur", medicamento: "Ibuprofeno 600mg", dosis: CADA_8_HORAS],
+        diagnostico: "Fernando Rivas" [condicion: "Resfriado Común", medicamento: "Paracetamol 500mg", dosis: CADA_8_HORAS],
+        diagnostico: "Miguel Torres" [condicion: "Cáncer de Pulmón", medicamento: "Cisplatino 50mg", dosis: SEMANAL],
+        diagnostico: "Miguel Torres" [condicion: "Neumonía", medicamento: "Azitromicina 500mg", dosis: DIARIA],
+        diagnostico: "Gabriela Ruiz" [condicion: "Taquicardia Sinusal", medicamento: "Metoprolol 25mg", dosis: CADA_12_HORAS],
+        diagnostico: "Lucía Hernández" [condicion: "Apendicitis Aguda", medicamento: "Ceftriaxona 1g, dosis: DIARIA],
+        diagnostico: "Raúl Domínguez" [condicion: "Hipertensión Arterial", medicamento: "Losartán 50mg", dosis: QUINCENAL],
+    };
+};
