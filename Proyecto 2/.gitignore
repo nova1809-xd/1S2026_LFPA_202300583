@@ -1,0 +1,52 @@
+# archivos de build y temporales
+build/
+bin/
+Debug/
+Release/
+out/
+cmake-build-*/
+
+# archivos objeto y binarios
+*.o
+*.obj
+*.exe
+*.dll
+*.lib
+*.so
+*.dylib
+
+# archivos de cmake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build.ninja
+
+# visual studio code
+.vscode/
+
+# qt y qmake
+*.pro.user
+*.qmake.stash
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# ide/editor temporales
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln
+*.vcxproj*
+
+# sistemas
+.DS_Store
+Thumbs.db
+
+# swap y editores
+*.swp
+*.swo
+
+# logs
+*.log
