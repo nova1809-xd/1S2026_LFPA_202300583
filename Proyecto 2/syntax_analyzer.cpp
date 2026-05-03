@@ -46,8 +46,6 @@ std::unique_ptr<ProgramNode> syntaxanalyzer::parseProgram() {
         panic("se esperaba 'TABLERO' al inicio del programa");
         return nullptr;
     }
-    // guardamos posicion y avanzamos
-    int l = current.line; int c = current.column;
     advance();
 
     // esperamos CADENA
@@ -108,7 +106,6 @@ std::unique_ptr<ColumnNode> syntaxanalyzer::parseColumn() {
         panic("se esperaba 'COLUMNA' al iniciar una columna");
         return nullptr;
     }
-    int startLine = current.line; int startCol = current.column;
     advance();
 
     if (current.type != tokentype::CADENA) {
@@ -165,7 +162,6 @@ std::unique_ptr<TaskNode> syntaxanalyzer::parseTask() {
         panic("se esperaba 'TAREA' al iniciar una tarea");
         return nullptr;
     }
-    int tLine = current.line; int tCol = current.column;
     advance();
 
     if (current.type != tokentype::DOS_PUNTOS) {

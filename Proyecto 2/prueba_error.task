@@ -1,0 +1,8 @@
+TABLERO "tablero_error" {
+  COLUMNA "falla1" {
+    TAREA: "tarea_sin_atributos"[PRIORIDAD ALTA]
+  
+  COLUMNA "falla2" {
+    TAREA: "tarea_con_prioridad_mala"[PRIORIDAD: URGENTE, RESPONSABLE: "bob", FECHA_LIMITE: 2026-05-15]
+  };
+};
