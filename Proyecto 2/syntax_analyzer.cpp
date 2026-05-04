@@ -13,6 +13,14 @@ syntaxanalyzer::syntaxanalyzer(lexicalanalyzer &lx) : lex(lx), errorCount(0) {
 
 void syntaxanalyzer::advance() {
     current = lex.nextToken();
+    
+    // si el token actual es ERROR (caracter no reconocido del lexer),
+    // lo reportamos como error lexico y saltamos ese token
+    while (current.type == tokentype::ERROR) {
+        error_t e(++errorCount, current.lexeme, "lexico", "caracter no reconocido", current.line, current.column);
+        errores.push_back(e);
+        current = lex.nextToken();
+    }
 }
 
 void syntaxanalyzer::panic(const std::string &msg) {

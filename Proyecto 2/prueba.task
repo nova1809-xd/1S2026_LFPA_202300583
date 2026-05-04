@@ -1,9 +1,0 @@
-TABLERO "tablero_demo" {
-  COLUMNA "pendientes" {
-    TAREA: "armar parser"[PRIORIDAD: ALTA, RESPONSABLE: "ana", FECHA_LIMITE: 2026-05-10]
-  };
-
-  COLUMNA "hecho" {
-    TAREA: "crear lexer"[PRIORIDAD: MEDIA, RESPONSABLE: "luis", FECHA_LIMITE: 2026-05-11]
-  };
-};

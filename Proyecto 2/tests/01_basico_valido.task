@@ -1,0 +1,5 @@
+TABLERO "Proyecto IPC2" {
+    COLUMNA "Pendientes" {
+        tarea: "Definir dron" [prioridad: ALTA, responsable: "Angel", fecha_limite: 2026-05-10]
+    };
+};

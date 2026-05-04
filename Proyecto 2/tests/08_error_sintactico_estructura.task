@@ -1,0 +1,5 @@
+TABLERO "Estructura Rota" {
+    COLUMNA {
+        tarea: "Atributos fuera" prioridad: ALTA, responsable: "Angel", fecha_limite: 2026-05-25]
+    };
+};

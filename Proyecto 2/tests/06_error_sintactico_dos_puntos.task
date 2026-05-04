@@ -1,0 +1,5 @@
+TABLERO "Errores Sintacticos" {
+    COLUMNA "Por Hacer" {
+        tarea "Sin dos puntos" [prioridad ALTA, responsable: "Ana", fecha_limite: 2026-05-06]
+    };
+};

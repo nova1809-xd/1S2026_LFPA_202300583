@@ -1,0 +1,6 @@
+TABLERO "Caos Total" {
+    COLUMNA "Mix" {
+        tarea "Error sintactico" [prioridad: URGENTE, responsable: "Zenaida", fecha_limite: 2026-05-05],
+        tarea: "Simbolo raro &" [prioridad: MEDIA, responsable: "Chrystian", fecha_limite: 2026-05-08
+    };
+};

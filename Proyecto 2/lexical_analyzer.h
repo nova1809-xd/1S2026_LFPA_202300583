@@ -7,6 +7,7 @@
 #include "error.h"
 #include <istream>
 #include <memory>
+#include <vector>
 
 class lexicalanalyzer {
 public:
@@ -15,6 +16,9 @@ public:
 
     // devuelve el siguiente token
     token nextToken();
+
+    // tokenizacion parcial: obten los tokens ya producidos por el lexer
+    const std::vector<token>& getTokens() const;
 
     // obtener ultima posicion (util para reportes)
     int getLine() const;
@@ -33,6 +37,8 @@ private:
     void putBack(int c);
     int peekChar();
     static std::string toLower(const std::string &s);
+
+    std::vector<token> tokens; // guardamos los tokens que el lexer va produciendo
 };
 
 #endif // PROYECTO2_LEXICAL_ANALYZER_H

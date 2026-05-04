@@ -1,0 +1,8 @@
+TABLERO "Prueba de Fuego" {
+    COLUMNA "Rota" {
+        tarea: "Esta columna no cierra" [prioridad: ALTA, responsable: "Angel", fecha_limite: 2026-05-01]
+    
+    COLUMNA "Salvada" {
+        tarea: "Esta deberia parsearse" [prioridad: BAJA, responsable: "Jose", fecha_limite: 2026-05-05]
+    };
+};

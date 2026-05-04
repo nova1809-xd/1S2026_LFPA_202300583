@@ -1,0 +1,7 @@
+TABLERO "Proyecto LFP" {
+    @
+    COLUMNA "Fase 1" {
+        tarea: "Revisar codigo" [prioridad: MEDIA, responsable: "Luis", fecha_limite: 2026-05-04]
+    };
+    $
+};

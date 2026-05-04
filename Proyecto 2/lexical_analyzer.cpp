@@ -97,6 +97,7 @@ token lexicalanalyzer::nextToken() {
     if (c == -1) {
         // eof
         token tok(++tokenCounter, "", tokentype::EOF_TOKEN, startLine, startCol);
+        tokens.push_back(tok);
         return tok;
     }
 
@@ -127,6 +128,7 @@ token lexicalanalyzer::nextToken() {
         else tt = tokentype::ERROR; // palabras desconocidas las marcamos error por ahora
 
         token tok(++tokenCounter, lex, tt, startLine, startCol);
+        tokens.push_back(tok);
         return tok;
     }
 
@@ -160,14 +162,17 @@ token lexicalanalyzer::nextToken() {
 
         if (isDate) {
             token tok(++tokenCounter, lex, tokentype::FECHA, startLine, startCol);
+            tokens.push_back(tok);
             return tok;
         } else {
             // si contiene '-' pero no cumple, lo marcamos error
             if (lex.find('-') != std::string::npos) {
                 token tok(++tokenCounter, lex, tokentype::ERROR, startLine, startCol);
+                tokens.push_back(tok);
                 return tok;
             }
             token tok(++tokenCounter, lex, tokentype::ENTERO, startLine, startCol);
+            tokens.push_back(tok);
             return tok;
         }
     }
@@ -192,30 +197,40 @@ token lexicalanalyzer::nextToken() {
         if (nc != '"') {
             // eof o no se cerró
             token tok(++tokenCounter, lex, tokentype::ERROR, startLine, startCol);
+            tokens.push_back(tok);
             return tok;
         }
         // consumimos la comilla de cierre ya realizada
         token tok(++tokenCounter, lex, tokentype::CADENA, startLine, startCol);
+        tokens.push_back(tok);
         return tok;
     }
 
     // simbolos simples
     switch (c) {
-        case '{': return token(++tokenCounter, "{", tokentype::LLAVE_A, startLine, startCol);
-        case '}': return token(++tokenCounter, "}", tokentype::LLAVE_C, startLine, startCol);
-        case '[': return token(++tokenCounter, "[", tokentype::CORCHETE_A, startLine, startCol);
-        case ']': return token(++tokenCounter, "]", tokentype::CORCHETE_C, startLine, startCol);
-        case ':': return token(++tokenCounter, ":", tokentype::DOS_PUNTOS, startLine, startCol);
-        case ',': return token(++tokenCounter, ",", tokentype::COMA, startLine, startCol);
-        case ';': return token(++tokenCounter, ";", tokentype::PUNTO_COMA, startLine, startCol);
+        case '{': { token tok(++tokenCounter, "{", tokentype::LLAVE_A, startLine, startCol); tokens.push_back(tok); return tok; }
+        case '}': { token tok(++tokenCounter, "}", tokentype::LLAVE_C, startLine, startCol); tokens.push_back(tok); return tok; }
+        case '[': { token tok(++tokenCounter, "[", tokentype::CORCHETE_A, startLine, startCol); tokens.push_back(tok); return tok; }
+        case ']': { token tok(++tokenCounter, "]", tokentype::CORCHETE_C, startLine, startCol); tokens.push_back(tok); return tok; }
+        case ':': { token tok(++tokenCounter, ":", tokentype::DOS_PUNTOS, startLine, startCol); tokens.push_back(tok); return tok; }
+        case ',': { token tok(++tokenCounter, ",", tokentype::COMA, startLine, startCol); tokens.push_back(tok); return tok; }
+        case ';': { token tok(++tokenCounter, ";", tokentype::PUNTO_COMA, startLine, startCol); tokens.push_back(tok); return tok; }
         case '/': {
             // si llegamos aqui y no era comentario, devolvemos '/' como error o simbolo no soportado
-            return token(++tokenCounter, "/", tokentype::ERROR, startLine, startCol);
+            token tok(++tokenCounter, "/", tokentype::ERROR, startLine, startCol);
+            tokens.push_back(tok);
+            return tok;
         }
         default: {
             // cualquier otro caracter lo marcamos como error
             std::string s(1, static_cast<char>(c));
-            return token(++tokenCounter, s, tokentype::ERROR, startLine, startCol);
+            token tok(++tokenCounter, s, tokentype::ERROR, startLine, startCol);
+            tokens.push_back(tok);
+            return tok;
         }
     }
+}
+
+const std::vector<token>& lexicalanalyzer::getTokens() const {
+    return tokens;
 }

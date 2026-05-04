@@ -1,0 +1,5 @@
+TABLERO "Proyecto LFP" {
+    COLUMNA "Errores" {
+        tarea: "Falta cerrar comillas [prioridad: ALTA, responsable: "Jorge", fecha_limite: 2026-05-05]
+    };
+};

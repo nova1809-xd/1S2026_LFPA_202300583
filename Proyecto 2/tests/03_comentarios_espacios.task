@@ -1,0 +1,12 @@
+TABLERO    "Vuelo a Toronto"    {
+    // Esta columna tiene espacios raros
+    COLUMNA 
+        "Planificacion" 
+    {
+        tarea:     "Comprar boletos" [
+            prioridad: ALTA, 
+            responsable: "Angel", 
+            fecha_limite: 2026-11-15
+        ]
+    };
+};

@@ -1,0 +1,6 @@
+TABLERO "Faltan Comas" {
+    COLUMNA "Backlog" {
+        tarea: "Tarea A" [prioridad: ALTA responsable: "Pedro" fecha_limite: 2026-05-10]
+        tarea: "Tarea B" [prioridad: BAJA, responsable: "Juan", fecha_limite: 2026-05-12]
+    };
+};

@@ -1,0 +1,9 @@
+TABLERO "Desarrollo App" {
+    COLUMNA "To Do" {
+        tarea: "Crear frontend" [prioridad: ALTA, responsable: "Maria", fecha_limite: 2026-06-01],
+        tarea: "Hacer mockups" [prioridad: BAJA, responsable: "Carlos", fecha_limite: 2026-05-15]
+    };
+    COLUMNA "In Progress" {
+        tarea: "Configurar API" [prioridad: MEDIA, responsable: "Angel", fecha_limite: 2026-05-20]
+    };
+};
